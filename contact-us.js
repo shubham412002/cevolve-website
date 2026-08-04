@@ -654,7 +654,7 @@ const LOCATIONS = [
     address: [
       "Casa Primia G Wing",
       "Lakeshore Greens, Palava Phase 2",
-      "Dombivli East, Maharashtra 421204, India",
+      "Dombivli                                                                                                                                                                                                                                 East, Maharashtra 421204, India",
     ],
     tel: "+91 98191 33331",
     email: "info@cevolvetechnologies.com",
