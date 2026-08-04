@@ -4410,3 +4410,561 @@ html {
         animation: none;
     }
 }
+
+
+
+
+
+
+/* v2 */
+
+/* =====================================================================
+   APPEND-LAST · CONTACT-US PAGE + FOOTER SOCIAL ICONS
+   Paste this at the very END of styles.css.
+   IMPORTANT: delete any earlier "CONTACT-US PAGE" block of mine first —
+   an older copy sitting after this one would override it.
+   Scoped under body.contact-page, so index.html is untouched.
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   1 · MAP — full width, directly under the header
+   --------------------------------------------------------------------- */
+.contact-page .offices-map-section {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background: #fff;
+    border-bottom: 1px solid #eef1f5;
+    overflow: hidden;
+}
+
+/* aspect ratio ≈ the world map's own, so it fills the width edge-to-edge
+   with no letterboxing at any screen size */
+.contact-page .offices-map {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 900 / 430;
+    min-height: 230px;
+}
+
+/* CRITICAL — the global reset (`svg { max-width:100%; height:auto }`)
+   collapses the map SVG and renders it tiny. Undo it here only. */
+.contact-page .offices-map svg,
+.contact-page .jvm-container svg {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    display: block;
+}
+
+.contact-page .jvm-container {
+    background: transparent;
+    touch-action: auto;
+    /* page still scrolls over the map on mobile */
+}
+
+/* countries are decoration only — no pointer, no tooltip, no cursor.
+   Their outline / highlight colours are set in contact-us.js. */
+.contact-page .jvm-region {
+    pointer-events: none;
+    cursor: default;
+}
+
+/* hit-testing is handled by the .cev-hit buttons contact-us.js adds,
+   so the SVG pointer circles themselves take no pointer events */
+.contact-page .jvm-marker {
+    pointer-events: none;
+}
+
+/* the pulse rings, tap targets and address card are styled by
+   contact-us.js (injected last) so nothing here can override them */
+
+/* graceful message if the map library can't load */
+.contact-page .offices-map.is-unavailable {
+    aspect-ratio: auto;
+    min-height: 0;
+    height: auto;
+    margin: 24px 6%;
+    padding: 40px 20px;
+    border: 1px dashed #d7e0e9;
+    border-radius: 12px;
+    text-align: center;
+    color: #9aa8b6;
+    font-weight: 600;
+}
+
+.contact-page .offices-map.is-unavailable::after {
+    content: "Map unavailable — office addresses are listed below.";
+}
+
+/* ---------------------------------------------------------------------
+   2 · ZOOM BUTTONS
+   White chip with a blue glyph — stays readable over the outline map,
+   the white ocean and any tinted country.
+   --------------------------------------------------------------------- */
+
+/* the library tooltip is fully suppressed; contact-us.js renders .cev-tip */
+.contact-page .jvm-tooltip {
+    display: none !important;
+}
+
+.contact-page .jvm-zoom-btn {
+    left: auto;
+    right: 16px;
+    width: 34px;
+    height: 34px;
+    line-height: 30px;
+    padding: 0;
+    text-align: center;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--blue);
+    background: #fff;
+    border: 1.5px solid #d9e3f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(1, 20, 56, .22);
+    transition: background .25s ease, color .25s ease, transform .25s ease;
+}
+
+.contact-page .jvm-zoom-btn:hover {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.contact-page .jvm-zoom-btn:active {
+    transform: translateY(0);
+}
+
+.contact-page .jvm-zoom-btn.jvm-zoomin {
+    top: 16px;
+}
+
+.contact-page .jvm-zoom-btn.jvm-zoomout {
+    top: 58px;
+}
+
+/* ---------------------------------------------------------------------
+   3 · TITLE + OFFICES + FORM
+   --------------------------------------------------------------------- */
+.contact-page .offices-section {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 56px 6% 90px;
+}
+
+.contact-page .offices-head {
+    margin-bottom: 42px;
+}
+
+.contact-page .offices-head .section-title {
+    margin-bottom: 10px;
+}
+
+.offices-head-note {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 640px;
+}
+
+.offices-head-note a {
+    color: var(--blue);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(3, 97, 235, .35);
+}
+
+.offices-head-note a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.offices-layout {
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: 56px;
+    align-items: start;
+}
+
+.form-col-title {
+    font-family: var(--font);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--charcoal);
+    margin-bottom: 24px;
+}
+
+.office-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+/* ---------- office card ---------- */
+.office-card {
+    background: #fff;
+    border: 1px solid #e8edf2;
+    border-radius: 14px;
+    padding: 22px 20px 20px;
+    transition: border-color .3s ease, box-shadow .3s ease, transform .3s ease;
+}
+
+.office-card:hover {
+    border-color: #c9d8ea;
+    box-shadow: 0 12px 30px rgba(1, 20, 56, .07);
+    transform: translateY(-2px);
+}
+
+.office-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 2px;
+}
+
+.office-country {
+    font-family: var(--font);
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--charcoal);
+    line-height: 1.25;
+}
+
+.office-tag {
+    display: inline-block;
+    background: rgba(3, 97, 235, .08);
+    color: var(--blue);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .3px;
+    white-space: nowrap;
+}
+
+.office-city {
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.office-address {
+    font-style: normal;
+    color: var(--muted);
+    font-size: 14.5px;
+    line-height: 1.75;
+    margin-bottom: 12px;
+}
+
+.office-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 14px;
+    color: var(--charcoal);
+    margin-bottom: 18px;
+}
+
+.office-contact i {
+    color: var(--blue);
+    margin-right: 6px;
+}
+
+.office-contact a {
+    color: var(--charcoal);
+    text-decoration: none;
+}
+
+.office-contact a:hover {
+    color: var(--blue);
+}
+
+/* ---------- "View on map" → opens Google Maps ---------- */
+.btn-map {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 42px;
+    padding: 0 22px;
+    border: none;
+    border-radius: 999px;
+    font-family: var(--font);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--blue) 55%, var(--dark) 115%);
+    box-shadow: 0 5px 18px rgba(3, 97, 235, .38), inset 0 0 0 1px rgba(255, 255, 255, .12);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.btn-map:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(3, 97, 235, .48), inset 0 0 0 1px rgba(255, 255, 255, .18);
+}
+
+.btn-map:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+/* ---------- form column ---------- */
+.contact-page .contact-form {
+    border-radius: 20px;
+    padding: 34px 32px;
+}
+
+/* ---------------------------------------------------------------------
+   4 · FOOTER SOCIAL ICONS (both index.html and contact-us.html)
+   --------------------------------------------------------------------- */
+.footer-social {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-social a {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .07);
+    border: 1px solid rgba(255, 255, 255, .12);
+    color: rgba(255, 255, 255, .75);
+    font-size: 16px;
+    text-decoration: none;
+    transition: background .28s ease, color .28s ease, transform .28s ease,
+        border-color .28s ease, box-shadow .28s ease;
+}
+
+.footer-social a:hover {
+    color: #fff;
+    transform: translateY(-3px);
+    border-color: transparent;
+}
+
+.footer-social a.s-linkedin:hover {
+    background: #0a66c2;
+    box-shadow: 0 8px 20px rgba(10, 102, 194, .45);
+}
+
+.footer-social a.s-instagram:hover {
+    background: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888);
+    box-shadow: 0 8px 20px rgba(220, 39, 67, .45);
+}
+
+.footer-social a.s-facebook:hover {
+    background: #1877f2;
+    box-shadow: 0 8px 20px rgba(24, 119, 242, .45);
+}
+
+/* X has no brand colour — invert so it stays visible on the dark footer */
+.footer-social a.s-x:hover {
+    background: #fff;
+    color: #0a1628;
+    box-shadow: 0 8px 20px rgba(255, 255, 255, .28);
+}
+
+.footer-social a.s-whatsapp:hover {
+    background: #25d366;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, .45);
+}
+
+/* ---------------------------------------------------------------------
+   5 · RESPONSIVE
+   --------------------------------------------------------------------- */
+@media (max-width: 1100px) {
+    .offices-layout {
+        grid-template-columns: 1fr;
+        gap: 44px;
+    }
+}
+
+@media (max-width: 767px) {
+    .contact-page .offices-map {
+        aspect-ratio: 900 / 480;
+        min-height: 210px;
+    }
+
+    .contact-page .jvm-zoom-btn {
+        right: 10px;
+        width: 32px;
+        height: 32px;
+        line-height: 28px;
+        font-size: 18px;
+    }
+
+    .contact-page .jvm-zoom-btn.jvm-zoomin {
+        top: 10px;
+    }
+
+    .contact-page .jvm-zoom-btn.jvm-zoomout {
+        top: 50px;
+    }
+
+    .contact-page .offices-section {
+        padding: 40px 5% 64px;
+    }
+
+    .contact-page .offices-head {
+        margin-bottom: 30px;
+    }
+
+    .office-list {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-page .contact-form {
+        padding: 26px 20px;
+    }
+
+    .btn-map {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer-social {
+        justify-content: center;
+    }
+}
+
+
+
+/* countries are decoration only — no pointer, no tooltip, no cursor.
+   `non-scaling-stroke` keeps the border at 1 device pixel no matter how
+   far you zoom, so adjacent countries' strokes read as one thin line
+   instead of a thick double band. */
+.contact-page .jvm-region {
+    pointer-events: none;
+    cursor: default;
+    vector-effect: non-scaling-stroke;
+    stroke-width: 1px;
+    stroke-linejoin: round;
+}
+
+
+
+
+
+/* =====================================================================
+   APPEND-LAST · CONTACT PAGE: tighter gutters, wider form,
+   corner-ribbon office tags, non-breaking contact rows
+   ===================================================================== */
+
+/* ---- tighter side spacing, more usable width ---- */
+.contact-page .offices-section {
+    max-width: 1400px;
+    padding: 56px 4% 90px;
+}
+
+/* form column now the wider of the two, as on the home page */
+.offices-layout {
+    grid-template-columns: 1fr 1.12fr;
+    gap: 44px;
+}
+
+.contact-page .contact-form {
+    padding: 36px 34px;
+}
+
+.office-list {
+    gap: 20px;
+}
+
+/* ---- office card: tag becomes a tucked corner ribbon ---- */
+.office-card {
+    position: relative;
+    overflow: hidden;
+    /* clips the ribbon to the rounded corner */
+    padding: 22px 20px 20px;
+}
+
+.office-card-head {
+    display: block;
+    /* was flex + wrap — that's what pushed the tag onto its own line */
+    margin-bottom: 6px;
+}
+
+.office-country {
+    padding-right: 96px;
+    /* keeps long names clear of the ribbon */
+    font-size: 18px;
+}
+
+.office-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 6px 12px 6px 14px;
+    background: rgba(3, 97, 235, .09);
+    color: var(--blue);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    /* flush with the card's top-right radius, tucked at bottom-left */
+    border-radius: 0 13px 0 12px;
+}
+
+/* ---- contact rows: icon stays beside its text ---- */
+.office-contact {
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.office-contact span {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+}
+
+.office-contact i {
+    margin: 0;
+    flex-shrink: 0;
+    /* was margin-right — the gap handles spacing now */
+    position: relative;
+    top: 2px;
+}
+
+.office-contact a {
+    overflow-wrap: anywhere;
+    /* long email can't overflow the card */
+}
+
+/* ---- responsive ---- */
+@media (max-width: 1100px) {
+    .offices-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+}
+
+@media (max-width: 767px) {
+    .contact-page .offices-section {
+        padding: 40px 5% 64px;
+    }
+
+    .contact-page .contact-form {
+        padding: 26px 20px;
+    }
+
+    .office-country {
+        padding-right: 92px;
+    }
+}
