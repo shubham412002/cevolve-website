@@ -4157,3 +4157,256 @@ html {
         justify-content: center;
     }
 }
+
+
+
+/* =====================================================================
+   APPEND-LAST · equal breathing room above / below the trust strip
+   ===================================================================== */
+
+/* the 100vh hero left dead white space above the strip — let it hug
+   its own content (slider + CTA buttons) instead */
+.hero {
+    height: auto;
+    min-height: 0;
+}
+
+.hero-btns {
+    margin: 26px auto 0;
+}
+
+/* one knob controls both sides */
+.trust-strip {
+    --strip-gap: 64px;
+    padding: 28px 6%;
+    /* symmetric inside */
+    margin: var(--strip-gap) 0 0;
+    /* gap above */
+}
+
+#services {
+    padding-top: var(--strip-gap, 64px);
+    /* gap below == gap above */
+}
+
+@media (max-width: 767px) {
+    .trust-strip {
+        --strip-gap: 40px;
+        padding: 26px 6%;
+    }
+
+    #services {
+        padding-top: 40px;
+    }
+}
+
+
+/* =====================================================================
+   APPEND-LAST · CLIENTS: continuous marquee, larger logos
+   ===================================================================== */
+
+.clientsSwiper {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 10px 0 0;
+    overflow: hidden;
+    /* soft fade at both edges */
+    mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+
+/* linear timing is what turns autoplay into a smooth drift */
+.clientsSwiper .swiper-wrapper {
+    transition-timing-function: linear !important;
+    align-items: center;
+}
+
+/* pagination no longer used */
+.clients-pagination {
+    display: none !important;
+}
+
+/* ---- card: fixed width so slidesPerView:"auto" works ---- */
+.clientsSwiper .client-logo {
+    width: 230px;
+    height: 146px;
+    min-height: 0;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 30px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: transparent;
+    border: 1.5px dashed transparent;
+    border-radius: 14px;
+    transition: background .3s ease, border-color .3s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ---- logo: bigger again ---- */
+.clientsSwiper .client-logo img {
+    max-height: 78px;
+    /* 78 × 1.1 = 86px < 86px inner height → cannot clip */
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+    filter: grayscale(100%);
+    opacity: .65;
+    transform-origin: center;
+    transition: transform .4s cubic-bezier(.2, .7, .3, 1), filter .35s ease, opacity .35s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .clientsSwiper .client-logo:hover {
+        background: #fff;
+        border-color: #d7e0e9;
+    }
+
+    .clientsSwiper .client-logo:hover img {
+        transform: scale(1.1);
+        filter: grayscale(0%);
+        opacity: 1;
+    }
+}
+
+.clientsSwiper .clicon-fallback {
+    color: #9aa8b6;
+    font-weight: 600;
+    font-size: 13.5px;
+    text-align: center;
+}
+
+@media (max-width: 767px) {
+    .clientsSwiper .client-logo {
+        width: 172px;
+        height: 118px;
+        padding: 24px 18px;
+    }
+
+    .clientsSwiper .client-logo img {
+        max-height: 58px;
+    }
+}
+
+/* =====================================================================
+   APPEND-LAST · CLIENTS MARQUEE — 30s loop, bigger logos, hover zoom
+   ===================================================================== */
+
+.clients-marquee {
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 22px 0;
+    /* clip sideways only, so the hover zoom can't be cut off */
+    overflow: visible;
+    overflow-x: clip;
+    overflow-y: visible;
+    mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+
+.clients-track {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 30px;
+    width: max-content;
+    animation: 30s linear infinite marquee;
+    will-change: transform;
+}
+
+/* script.js duplicates the row, so -50% → 0 is a seamless loop */
+@keyframes marquee {
+    from {
+        transform: translateX(-50%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* hover anywhere on the strip freezes it instantly */
+.clients-marquee:hover .clients-track,
+.clients-marquee:focus-within .clients-track,
+.clients-marquee.is-paused .clients-track {
+    animation-play-state: paused;
+}
+
+/* ---- card: bigger box, dashed border on hover only ---- */
+.clients-track .client-logo {
+    flex: 0 0 auto;
+    width: 226px;
+    height: 142px;
+    min-height: 0;
+    margin: 0;
+    padding: 28px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: transparent;
+    border: 1.5px dashed transparent;
+    border-radius: 14px;
+    transition: background .3s ease, border-color .3s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.clients-track .client-logo:hover,
+.clients-track .client-logo.is-active {
+    transform: none;
+    box-shadow: none;
+    background: #fff;
+    border-color: #d7e0e9;
+}
+
+/* ---- logo: larger, greyscale at rest, zooms + colourises on hover ---- */
+.clients-track .client-logo img {
+    max-height: 76px;
+    /* 76 × 1.1 = 83.6px < 86px inner height → cannot clip */
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    filter: grayscale(100%);
+    opacity: .65;
+    transform-origin: center;
+    transition: transform .4s cubic-bezier(.2, .7, .3, 1), filter .35s ease, opacity .35s ease;
+}
+
+.clients-track .client-logo:hover img,
+.clients-track .client-logo.is-active img {
+    transform: scale(1.1);
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* ---- mobile ---- */
+@media (max-width: 767px) {
+    .clients-track {
+        gap: 20px;
+        animation-duration: 22s;
+    }
+
+    .clients-track .client-logo {
+        width: 168px;
+        height: 116px;
+        padding: 24px 18px;
+    }
+
+    .clients-track .client-logo img {
+        max-height: 56px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .clients-track {
+        animation: none;
+    }
+}

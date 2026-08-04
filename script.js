@@ -159,45 +159,49 @@ async function handleSubmit(e) {
 
 /* ── CLIENTS: tap a logo to stop the strip, tap outside to resume ── */
 (function () {
-  const marquee = document.querySelector(".clients-marquee");
-  if (!marquee) return;
+  const track = document.querySelector(".clients-track");
+  if (!track) return;
 
-  const clearActive = () =>
-    marquee
-      .querySelectorAll(".client-logo.is-active")
-      .forEach((c) => c.classList.remove("is-active"));
+  const items = Array.from(track.children);
 
-  const resume = () => {
-    marquee.classList.remove("is-paused");
-    clearActive();
-  };
-
-  // tap a card → pause + highlight it; tap the same card again → resume
-  marquee.addEventListener("click", (e) => {
-    const card = e.target.closest(".client-logo");
-    if (!card) return;
-
-    const wasActive = card.classList.contains("is-active");
-    clearActive();
-
-    if (wasActive) {
-      marquee.classList.remove("is-paused");
-      return;
-    }
-    card.classList.add("is-active");
-    marquee.classList.add("is-paused");
-  });
-
-  // tap anywhere outside the strip → start moving again
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest(".clients-marquee")) resume();
-  });
-
-  document.addEventListener(
-    "touchstart",
-    (e) => {
-      if (!e.target.closest(".clients-marquee")) resume();
-    },
-    { passive: true },
+  items.forEach((el) =>
+    el.classList.remove(
+      "reveal",
+      "reveal-delay-1",
+      "reveal-delay-2",
+      "reveal-delay-3",
+      "reveal-delay-4",
+      "reveal-delay-5",
+      "reveal-delay-6",
+    ),
   );
+
+  items.forEach((el) => {
+    const clone = el.cloneNode(true);
+    clone.setAttribute("aria-hidden", "true");
+    track.appendChild(clone);
+  });
 })();
+
+/* ── CLIENTS: 4 logos per view, hold, then advance 4 ── */
+// if (document.querySelector(".clientsSwiper")) {
+//   new Swiper(".clientsSwiper", {
+//     slidesPerView: 2,
+//     slidesPerGroup: 2,
+//     spaceBetween: 18,
+//     loop: true,
+//     speed: 800, // glide duration
+//     grabCursor: true,
+//     allowTouchMove: true, // swipe snaps cleanly to the next set
+//     autoplay: {
+//       delay: 4000, // how long each set holds still
+//       disableOnInteraction: false,
+//       pauseOnMouseEnter: true,
+//     },
+//     pagination: { el: ".clients-pagination", clickable: true },
+//     breakpoints: {
+//       768: { slidesPerView: 2, slidesPerGroup: 2, spaceBetween: 22 },
+//       1100: { slidesPerView: 4, slidesPerGroup: 4, spaceBetween: 28 },
+//     },
+//   });
+// }
