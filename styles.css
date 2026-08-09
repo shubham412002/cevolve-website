@@ -1161,7 +1161,7 @@ section.section {
 }
 
 .form-group textarea {
-    resize: vertical;
+    resize: none;
     min-height: 110px;
 }
 
@@ -2078,6 +2078,8 @@ span {
 }
 
 .step-icon {
+    /* padding added cause icon sizes are not correct */
+    padding: 16px;
     width: 52px;
     height: 52px;
     background: #fff;
@@ -3323,7 +3325,7 @@ nav a:not(.nav-cta):hover::after {
 
 /* DESKTOP — horizontal logo */
 .logo-img {
-    height: 65px;
+    height: 45px;
     /* controls the size; width auto-keeps ratio */
     width: auto;
     max-width: 200px;
@@ -4003,7 +4005,7 @@ nav a:not(.nav-cta):hover::after {
 @media (max-width: 1100px) {
     .offices-layout {
         grid-template-columns: 1fr;
-        gap: 44px;
+        gap: 40px;
     }
 }
 
@@ -4316,7 +4318,7 @@ html {
     align-items: center;
     gap: 30px;
     width: max-content;
-    animation: 30s linear infinite marquee;
+    animation: 20s linear infinite marquee;
     will-change: transform;
 }
 
@@ -4391,7 +4393,7 @@ html {
 @media (max-width: 767px) {
     .clients-track {
         gap: 20px;
-        animation-duration: 22s;
+        animation-duration: 20s;
     }
 
     .clients-track .client-logo {
@@ -4789,7 +4791,7 @@ html {
 @media (max-width: 1100px) {
     .offices-layout {
         grid-template-columns: 1fr;
-        gap: 44px;
+        gap: 40px;
     }
 }
 
@@ -4874,7 +4876,7 @@ html {
 /* form column now the wider of the two, as on the home page */
 .offices-layout {
     grid-template-columns: 1fr 1.12fr;
-    gap: 44px;
+    gap: 40px;
 }
 
 .contact-page .contact-form {
@@ -4882,7 +4884,7 @@ html {
 }
 
 .office-list {
-    gap: 20px;
+    gap:16px;
 }
 
 /* ---- office card: tag becomes a tucked corner ribbon ---- */
@@ -4967,4 +4969,56 @@ html {
     .office-country {
         padding-right: 92px;
     }
+}
+
+
+
+/* =====================================================================
+   APPEND-LAST · PROCESS ICONS — bare SVG inside the existing circle
+   ===================================================================== */
+
+.step-icon {
+    width: 52px;
+    height: 52px;
+    background: #fff;
+    border: 1px solid #eef3fa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    position: relative;
+    z-index: 2;
+    /* softer than the old 0.35 — the ring is drawn here now, not in the PNG */
+    box-shadow:
+        0 8px 20px rgba(3, 97, 235, .14),
+        0 2px 6px rgba(1, 20, 56, .05);
+    transition: box-shadow .3s ease;
+}
+
+/* the icon no longer fills the box — a fixed size keeps it razor sharp.
+   `max-width: none` is required: the global `img { max-width:100% }`
+   reset would otherwise fight the fixed height and squash it. */
+.step-icon img {
+    width: 24px;
+    height: 24px;
+    max-width: none;
+    object-fit: contain;
+    display: block;
+}
+
+.step:hover .step-icon {
+    box-shadow:
+        0 14px 28px rgba(3, 97, 235, .2),
+        0 2px 6px rgba(1, 20, 56, .06);
+}
+
+/* connector line through the circle's centre: .step padding-top 24 + 26 */
+.steps-grid::before {
+    top: 50px;
+}
+
+
+#home {
+    scroll-margin-top: 88px;
 }
