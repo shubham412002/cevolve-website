@@ -2079,7 +2079,7 @@ span {
 
 .step-icon {
     /* padding added cause icon sizes are not correct */
-    padding: 16px;
+    /* padding: 16px; */
     width: 52px;
     height: 52px;
     background: #fff;
@@ -5000,8 +5000,8 @@ html {
    `max-width: none` is required: the global `img { max-width:100% }`
    reset would otherwise fight the fixed height and squash it. */
 .step-icon img {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     max-width: none;
     object-fit: contain;
     display: block;
@@ -5021,4 +5021,51 @@ html {
 
 #home {
     scroll-margin-top: 88px;
+}
+
+
+/* =====================================================================
+   APPEND-LAST · intl-tel-input matched to the contact form
+   ===================================================================== */
+
+/* the library ships `.iti { display: inline-block }` — that would shrink
+   the phone field out of the form grid */
+.iti {
+    display: block;
+    width: 100%;
+}
+
+/* v29 exposes theming via custom properties */
+.contact-form .iti {
+    --iti-border-color: #e2e8f0;
+    --iti-country-selector-bg: #f4f6f8;
+    --iti-hover-color: #eef4fb;
+    --iti-icon-color: var(--muted);
+}
+
+/* the tel input inherits .contact-form input styling; just guarantee width */
+.contact-form .iti__tel-input {
+    width: 100%;
+}
+
+.contact-form .iti__country-list,
+.contact-form .iti__search-input {
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--charcoal);
+    background: #fff;
+}
+
+.contact-form .iti__search-input {
+    padding-left: 30px;
+}
+
+.contact-form .iti__country-list {
+    border-radius: 10px;
+    box-shadow: 0 18px 44px rgba(1, 20, 56, .18);
+}
+
+.contact-form .iti__selected-country:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
 }
