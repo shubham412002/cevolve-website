@@ -673,24 +673,20 @@ const LOCATIONS = [
     email: "info@cevolvetechnologies.com",
     coords: [24.908952, 55.118497],
   },
-
-  /* AUSTRALIA — fill this in and the office gets a pointer + card
-     automatically. Delete the surrounding comment markers to enable.
   {
     country: "Australia",
-    city: "",
+    city: "Cranbourne West",
     tag: "",
-    address: ["", ""],
-    tel: "",
+    address: ["2 Comte Cl", "Cranbourne West VIC 3977", "Victoria, Australia"],
+    tel: "+61 481 540 530",
     email: "info@cevolvetechnologies.com",
-    coords: [0, 0],
+    coords: [-38.1021034, 145.2577401],
   },
-  */
 ];
 
 /* Countries filled on the map — ISO 3166-1 alpha-2 codes.
    AU is listed so Australia highlights even before its address exists. */
-const OFFICE_REGIONS = ["IN", "AE"];
+const OFFICE_REGIONS = ["IN", "AE", "AU"];
 
 /* small helper — Google Maps link for a location */
 function gmapsUrl(loc) {
@@ -730,7 +726,7 @@ function gmapsUrl(loc) {
 
   /* how strongly the office countries are tinted. Keep this low — a solid
      #0361EB country would swallow the #0361EB pointer sitting on it. */
-//   const OFFICE_FILL_OPACITY = 0.15;
+  //   const OFFICE_FILL_OPACITY = 0.15;
 
   const reduceMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)",
@@ -1152,6 +1148,26 @@ function gmapsUrl(loc) {
 })();
 
 /* ---------------------------------------------------------------------
+   4c · PHONE FIELD — country selector (intl-tel-input v29)
+   --------------------------------------------------------------------- */
+let itiPhone = null;
+
+(function initPhoneInput() {
+  const input = document.getElementById("phone");
+  if (!input || typeof window.intlTelInput === "undefined") {
+    if (input) console.warn("[cevolve] intl-tel-input did not load.");
+    return;
+  }
+
+  itiPhone = window.intlTelInput(input, {
+    initialCountry: "in",
+    countryOrder: ["in", "ae", "au"] /* our office countries first */,
+    separateDialCode: true,
+    strictMode: true /* blocks impossible digits as you type */,
+  });
+})();
+
+/* ---------------------------------------------------------------------
    4b · FORM SUBMIT via EmailJS (identical to script.js)
    --------------------------------------------------------------------- */
 const EMAILJS_SERVICE_ID = "service_q3c9d6n";
@@ -1168,14 +1184,49 @@ async function handleSubmit(e) {
   btn.disabled = true;
   msg.style.display = "none";
 
+  // const form = e.target;
+
+  // const params = {
+  //   from_name: form.from_name.value,
+  //   reply_to: form.reply_to.value,
+  //   user_name: form.from_name.value, // required for auto-reply
+  //   company: form.company.value,
+  //   phone: form.phone.value,
+  //   service: form.service.value,
+  //   message: form.message.value,
+  // };
+
+  // with contry code
   const form = e.target;
+
+  /* full international number + the picked country.
+     NOTE: v29's method is getSelectedCountry(), not getSelectedCountryData(). */
+  const typed = form.phone.value.trim();
+  const country = itiPhone ? itiPhone.getSelectedCountry() : null;
+  const phoneFull = itiPhone && typed ? itiPhone.getNumber() : typed;
+
+  /* phone is optional — only validate if something was entered */
+  if (itiPhone && typed && !itiPhone.isValidNumber()) {
+    msg.style.display = "block";
+    msg.style.background = "rgba(239,68,68,0.10)";
+    msg.style.color = "#b91c1c";
+    msg.style.border = "1px solid rgba(239,68,68,0.35)";
+    msg.innerHTML =
+      '<i class="bi bi-exclamation-triangle"></i> That phone number doesn\'t look valid for the selected country.';
+    btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
+    btn.disabled = false;
+    return;
+  }
 
   const params = {
     from_name: form.from_name.value,
     reply_to: form.reply_to.value,
     user_name: form.from_name.value, // required for auto-reply
     company: form.company.value,
-    phone: form.phone.value,
+    phone: phoneFull, // E.164, e.g. +61481540530
+    country: country ? country.name : "", // e.g. "Australia"
+    country_code: country ? "+" + country.dialCode : "", // e.g. "+61"
+    country_iso: country ? country.iso2.toUpperCase() : "", // e.g. "AU"
     service: form.service.value,
     message: form.message.value,
   };

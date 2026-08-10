@@ -21,7 +21,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@29.2.2/dist/css/intlTelInput.css" />
   <!-- ── JSVECTORMAP (lightweight vector world map, no API key) ── -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" />
 </head>
@@ -108,7 +108,7 @@
               </div>
               <div class="form-group">
                 <label>Phone</label>
-                <input type="tel" name="phone" placeholder="+971 XX XXX XXXX" />
+                <input type="tel"  id="phone" name="phone" placeholder="+971 XX XXX XXXX" />
               </div>
             </div>
             <div class="form-group">
@@ -209,7 +209,7 @@
   <!-- jsvectormap core + world map data (must load before contact-us.js) -->
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@29.2.2/dist/js/intlTelInputWithUtils.min.js"></script>
   <script src="contact-us.js"></script>
 </body>
 
