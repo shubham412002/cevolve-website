@@ -1164,6 +1164,7 @@ let itiPhone = null;
     countryOrder: ["in", "ae", "au"] /* our office countries first */,
     separateDialCode: true,
     strictMode: true /* blocks impossible digits as you type */,
+    placeholderNumberPolicy: "OFF",
   });
 })();
 
