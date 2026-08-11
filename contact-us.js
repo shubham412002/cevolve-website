@@ -1171,34 +1171,114 @@ let itiPhone = null;
 /* ---------------------------------------------------------------------
    4b · FORM SUBMIT via EmailJS (identical to script.js)
    --------------------------------------------------------------------- */
-const EMAILJS_SERVICE_ID = "service_q3c9d6n";
-const EMAILJS_TEMPLATE_ID = "template_ta01r3o"; // company email
-const EMAILJS_AUTOREPLY_TEMPLATE = "template_6nfr2le"; // auto reply
+// const EMAILJS_SERVICE_ID = "service_q3c9d6n";
+// const EMAILJS_TEMPLATE_ID = "template_ta01r3o"; // company email
+// const EMAILJS_AUTOREPLY_TEMPLATE = "template_6nfr2le"; // auto reply
+
+// async function handleSubmit(e) {
+//   e.preventDefault();
+
+//   const btn = document.getElementById("submitBtn");
+//   const msg = document.getElementById("formMsg");
+
+//   btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
+//   btn.disabled = true;
+//   msg.style.display = "none";
+
+//   // const form = e.target;
+
+//   // const params = {
+//   //   from_name: form.from_name.value,
+//   //   reply_to: form.reply_to.value,
+//   //   user_name: form.from_name.value, // required for auto-reply
+//   //   company: form.company.value,
+//   //   phone: form.phone.value,
+//   //   service: form.service.value,
+//   //   message: form.message.value,
+//   // };
+
+//   // with contry code
+//   const form = e.target;
+
+//   /* full international number + the picked country.
+//      NOTE: v29's method is getSelectedCountry(), not getSelectedCountryData(). */
+//   const typed = form.phone.value.trim();
+//   const country = itiPhone ? itiPhone.getSelectedCountry() : null;
+//   const phoneFull = itiPhone && typed ? itiPhone.getNumber() : typed;
+
+//   /* phone is optional — only validate if something was entered */
+//   if (itiPhone && typed && !itiPhone.isValidNumber()) {
+//     msg.style.display = "block";
+//     msg.style.background = "rgba(239,68,68,0.10)";
+//     msg.style.color = "#b91c1c";
+//     msg.style.border = "1px solid rgba(239,68,68,0.35)";
+//     msg.innerHTML =
+//       '<i class="bi bi-exclamation-triangle"></i> That phone number doesn\'t look valid for the selected country.';
+//     btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
+//     btn.disabled = false;
+//     return;
+//   }
+
+//   const params = {
+//     from_name: form.from_name.value,
+//     reply_to: form.reply_to.value,
+//     user_name: form.from_name.value, // required for auto-reply
+//     company: form.company.value,
+//     phone: phoneFull, // E.164, e.g. +61481540530
+//     country: country ? country.name : "", // e.g. "Australia"
+//     country_code: country ? "+" + country.dialCode : "", // e.g. "+61"
+//     country_iso: country ? country.iso2.toUpperCase() : "", // e.g. "AU"
+//     service: form.service.value,
+//     message: form.message.value,
+//   };
+
+//   try {
+//     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
+//     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_AUTOREPLY_TEMPLATE, params);
+
+//     msg.style.display = "block";
+//     msg.style.background = "rgba(34,197,94,0.12)";
+//     msg.style.color = "#15803d";
+//     msg.style.border = "1px solid rgba(34,197,94,0.35)";
+//     msg.innerHTML =
+//       '<i class="bi bi-check2-circle"></i> Message sent successfully. Please check your email.';
+
+//     btn.innerHTML = '<i class="bi bi-check2-circle"></i> Sent!';
+//     form.reset();
+
+//     setTimeout(() => {
+//       btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
+//       btn.disabled = false;
+//       msg.style.display = "none";
+//     }, 5000);
+//   } catch (err) {
+//     console.error("EmailJS Error:", err);
+
+//     msg.style.display = "block";
+//     msg.style.background = "rgba(239,68,68,0.10)";
+//     msg.style.color = "#b91c1c";
+//     msg.style.border = "1px solid rgba(239,68,68,0.35)";
+//     msg.innerHTML =
+//       '<i class="bi bi-exclamation-triangle"></i> Message not sent. Please try again.';
+
+//     btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
+//     btn.disabled = false;
+//   }
+// }
+
+
+const CONTACT_API = "https://cevolve-contact-api.onrender.com/api/contact";
 
 async function handleSubmit(e) {
   e.preventDefault();
 
   const btn = document.getElementById("submitBtn");
   const msg = document.getElementById("formMsg");
+  const form = e.target;
 
   btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
   btn.disabled = true;
   msg.style.display = "none";
-
-  // const form = e.target;
-
-  // const params = {
-  //   from_name: form.from_name.value,
-  //   reply_to: form.reply_to.value,
-  //   user_name: form.from_name.value, // required for auto-reply
-  //   company: form.company.value,
-  //   phone: form.phone.value,
-  //   service: form.service.value,
-  //   message: form.message.value,
-  // };
-
-  // with contry code
-  const form = e.target;
 
   /* full international number + the picked country.
      NOTE: v29's method is getSelectedCountry(), not getSelectedCountryData(). */
@@ -1208,60 +1288,87 @@ async function handleSubmit(e) {
 
   /* phone is optional — only validate if something was entered */
   if (itiPhone && typed && !itiPhone.isValidNumber()) {
-    msg.style.display = "block";
-    msg.style.background = "rgba(239,68,68,0.10)";
-    msg.style.color = "#b91c1c";
-    msg.style.border = "1px solid rgba(239,68,68,0.35)";
-    msg.innerHTML =
-      '<i class="bi bi-exclamation-triangle"></i> That phone number doesn\'t look valid for the selected country.';
-    btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
-    btn.disabled = false;
+    showMsg(
+      msg,
+      false,
+      "That phone number doesn't look valid for the selected country.",
+    );
+    resetBtn(btn);
     return;
   }
 
-  const params = {
-    from_name: form.from_name.value,
-    reply_to: form.reply_to.value,
-    user_name: form.from_name.value, // required for auto-reply
-    company: form.company.value,
+  const payload = {
+    name: form.from_name.value.trim(),
+    email: form.reply_to.value.trim(),
     phone: phoneFull, // E.164, e.g. +61481540530
+    company: form.company.value.trim(),
+    service: form.service.value,
+    message: form.message.value.trim(),
     country: country ? country.name : "", // e.g. "Australia"
     country_code: country ? "+" + country.dialCode : "", // e.g. "+61"
     country_iso: country ? country.iso2.toUpperCase() : "", // e.g. "AU"
-    service: form.service.value,
-    message: form.message.value,
   };
 
   try {
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_AUTOREPLY_TEMPLATE, params);
+    const res = await fetch(CONTACT_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
-    msg.style.display = "block";
-    msg.style.background = "rgba(34,197,94,0.12)";
-    msg.style.color = "#15803d";
-    msg.style.border = "1px solid rgba(34,197,94,0.35)";
-    msg.innerHTML =
-      '<i class="bi bi-check2-circle"></i> Message sent successfully. Please check your email.';
+    /* read the body either way — errors usually carry a reason */
+    let data = null;
+    try {
+      data = await res.json();
+    } catch (_) {
+      /* endpoint returned no JSON; the status alone decides */
+    }
 
+    if (!res.ok) {
+      throw new Error(
+        (data && (data.message || data.error)) ||
+        "Request failed (" + res.status + ")",
+      );
+    }
+
+    // showMsg(msg, true, "Message sent successfully. We'll be in touch shortly.");
+    showMsg(
+      msg,
+      true,
+      (data && data.message) ||
+      "Thank you for contacting Cevolve Technologies. We have received your enquiry successfully.",
+    );
     btn.innerHTML = '<i class="bi bi-check2-circle"></i> Sent!';
     form.reset();
+    /* form.reset() doesn't reset the flag dropdown */
+    if (itiPhone) itiPhone.setSelectedCountry("in");
 
     setTimeout(() => {
-      btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
-      btn.disabled = false;
+      resetBtn(btn);
       msg.style.display = "none";
     }, 5000);
   } catch (err) {
-    console.error("EmailJS Error:", err);
-
-    msg.style.display = "block";
-    msg.style.background = "rgba(239,68,68,0.10)";
-    msg.style.color = "#b91c1c";
-    msg.style.border = "1px solid rgba(239,68,68,0.35)";
-    msg.innerHTML =
-      '<i class="bi bi-exclamation-triangle"></i> Message not sent. Please try again.';
-
-    btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
-    btn.disabled = false;
+    console.error("[cevolve] contact API error:", err);
+    showMsg(msg, false, err.message || "Message not sent. Please try again.");
+    resetBtn(btn);
   }
+}
+
+function resetBtn(btn) {
+  btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
+  btn.disabled = false;
+}
+
+function showMsg(el, ok, text) {
+  el.style.display = "block";
+  el.style.background = ok ? "rgba(34,197,94,0.12)" : "rgba(239,68,68,0.10)";
+  el.style.color = ok ? "#15803d" : "#b91c1c";
+  el.style.border = ok
+    ? "1px solid rgba(34,197,94,0.35)"
+    : "1px solid rgba(239,68,68,0.35)";
+  el.innerHTML =
+    '<i class="bi bi-' +
+    (ok ? "check2-circle" : "exclamation-triangle") +
+    '"></i> ' +
+    text;
 }
