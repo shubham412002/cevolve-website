@@ -2651,7 +2651,7 @@ span {
 }
 
 .trust-fallback {
-    display: none;
+    /* display: none; */
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
@@ -3336,9 +3336,9 @@ nav a:not(.nav-cta):hover::after {
 /* MOBILE — vertical logo */
 @media (max-width: 767px) {
     .logo-img {
-        height: 52px;
+        height: 44px;
         /* vertical marks are taller — a bit more height */
-        max-width: 120px;
+        max-width: 180px;
     }
 }
 
@@ -5068,4 +5068,52 @@ html {
 .contact-form .iti__selected-country:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 1px;
+}
+
+
+/* =====================================================================
+   APPEND-LAST · footer brand copy + centred motto
+   ===================================================================== */
+
+.footer-tagline {
+    color: #fff;
+    font-size: 15.5px;
+    font-weight: 700;
+    line-height: 1.45;
+    margin-top: 18px;
+    max-width: 320px;
+}
+
+/* the description paragraph sits closer under the tagline */
+.footer-brand .footer-tagline + p {
+    margin-top: 8px;
+    max-width: 340px;
+}
+
+/* motto: centred under the copy, with a hairline rule above it */
+.footer-motto {
+    margin-top: 18px;
+    padding-top: 16px;
+    max-width: 340px;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    text-align: center;
+    font-size: 13.5px;
+    font-weight: 700;
+    letter-spacing: .6px;
+    color: rgba(255, 255, 255, .8);
+}
+
+.footer-motto span {
+    color: var(--white);
+    margin: 0 4px;
+    font-weight: 400;
+}
+
+@media (max-width: 600px) {
+
+    .footer-tagline,
+    .footer-brand .footer-tagline + p,
+    .footer-motto {
+        max-width: 100%;
+    }
 }
