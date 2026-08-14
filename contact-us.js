@@ -649,12 +649,12 @@
 const LOCATIONS = [
   {
     country: "India",
-    city: "Dombivli East",
-    tag: "Headquarters",
+    city: "Thane",
+    tag: "Tech & Delivery",
     address: [
-      "Casa Primia G Wing",
-      "Lakeshore Greens, Palava Phase 2",
-      "Dombivli                                                                                                                                                                                                                                 East, Maharashtra 421204, India",
+      "Casa Primia-G Wing",
+      "Lakeshore Greens, Palava Phase-II",
+      "Thane, Maharashtra 421204, India",
     ],
     tel: "+91 98191 33331",
     email: "info@cevolvetechnologies.com",
@@ -663,20 +663,20 @@ const LOCATIONS = [
   {
     country: "United Arab Emirates",
     city: "Dubai",
-    tag: "Sales Office",
+    tag: "Global HQ & Delivery",
     address: [
       "Building A3, 3rd Floor",
       "Business Park, Dubai South",
       "Dubai, United Arab Emirates",
     ],
-    tel: "",
+    tel: "+971-508027984",
     email: "info@cevolvetechnologies.com",
     coords: [24.908952, 55.118497],
   },
   {
     country: "Australia",
     city: "Cranbourne West",
-    tag: "",
+    tag: "Regional Office",
     address: ["2 Comte Cl", "Cranbourne West VIC 3977", "Victoria, Australia"],
     tel: "+61 481 540 530",
     email: "info@cevolvetechnologies.com",
@@ -1095,33 +1095,73 @@ function gmapsUrl(loc) {
   LOCATIONS.forEach((loc) => {
     const card = document.createElement("article");
     card.className = "office-card";
+    // card.innerHTML =
+    //   '<div class="office-card-head">' +
+    //   '<h3 class="office-country">' +
+    //   loc.country +
+    //   "</h3>" +
+    //   (loc.tag ? '<span class="office-tag">' + loc.tag + "</span>" : "") +
+    //   "</div>" +
+    //   '<p class="office-city">' +
+    //   loc.city +
+    //   "</p>" +
+    //   '<address class="office-address">' +
+    //   loc.address.join("<br />") +
+    //   "</address>" +
+    //   '<p class="office-contact">' +
+    //   (loc.tel
+    //     ? '<span><i class="bi bi-telephone"></i> ' + loc.tel + "</span>"
+    //     : "") +
+    //   '<span><i class="bi bi-envelope"></i> <a href="mailto:' +
+    //   loc.email +
+    //   '">' +
+    //   loc.email +
+    //   "</a></span>" +
+    //   "</p>" +
+    //   '<a class="btn-map" href="' +
+    //   gmapsUrl(loc) +
+    //   '" target="_blank" rel="noopener">' +
+    //   '<i class="bi bi-geo-alt-fill"></i> View on map</a>';
     card.innerHTML =
       '<div class="office-card-head">' +
       '<h3 class="office-country">' +
       loc.country +
-      "</h3>" +
-      (loc.tag ? '<span class="office-tag">' + loc.tag + "</span>" : "") +
-      "</div>" +
+      '</h3>' +
+      (loc.tag ? '<span class="office-tag">' + loc.tag + '</span>' : '') +
+      '</div>' +
+
+      '<div class="office-content">' +
+
       '<p class="office-city">' +
       loc.city +
-      "</p>" +
+      '</p>' +
+
       '<address class="office-address">' +
       loc.address.join("<br />") +
-      "</address>" +
+      '</address>' +
+
       '<p class="office-contact">' +
       (loc.tel
-        ? '<span><i class="bi bi-telephone"></i> ' + loc.tel + "</span>"
-        : "") +
+        ? '<span><i class="bi bi-telephone"></i> ' + loc.tel + '</span>'
+        : '') +
+
       '<span><i class="bi bi-envelope"></i> <a href="mailto:' +
       loc.email +
       '">' +
       loc.email +
-      "</a></span>" +
-      "</p>" +
+      '</a></span>' +
+      '</p>' +
+
+      '</div>' +
+
+      '<div class="office-footer">' +
       '<a class="btn-map" href="' +
       gmapsUrl(loc) +
       '" target="_blank" rel="noopener">' +
-      '<i class="bi bi-geo-alt-fill"></i> View on map</a>';
+      '<i class="bi bi-geo-alt-fill"></i> View on Map' +
+      '</a>' +
+      '</div>';
+
 
     listEl.appendChild(card);
   });
@@ -1275,6 +1315,12 @@ async function handleSubmit(e) {
   const btn = document.getElementById("submitBtn");
   const msg = document.getElementById("formMsg");
   const form = e.target;
+  console.log("form submit", form);
+
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
 
   btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
   btn.disabled = true;
