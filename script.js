@@ -41,7 +41,7 @@ const heroSwiper = new Swiper(".heroSwiper", {
   spaceBetween: 0, // ← removes the white gap between slides
   slidesPerView: 1, // ← exactly one full slide, no peeking
   autoplay: { delay: 4500, disableOnInteraction: false },
-  grabCursor: true,
+  grabCursor: false, // ← no grab cursor on hero slider
   pagination: { el: ".swiper-pagination", clickable: true },
   navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
 });
