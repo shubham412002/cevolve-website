@@ -1,0 +1,450 @@
+/* =========================================================
+   CEvolve Contact Page
+   Leaflet Map
+========================================================= */
+
+:root {
+  --cev-blue: #0361eb;
+  --cev-dark: #011438;
+  --cev-light-map: #eef4fb;
+  --cev-border: #edf1f5;
+  --cev-text: #4f5965;
+  --cev-font: Helvetica, Arial, sans-serif;
+}
+
+
+/* =========================================================
+   MAP SECTION
+========================================================= */
+
+.contact-page .offices-map-section {
+  position: relative;
+  width: 100%;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+
+.contact-page .offices-map {
+  width: 100%;
+  height: 550px;
+  position: relative;
+  background: #eef4fb;
+  z-index: 1;
+}
+
+
+/* Leaflet needs this */
+
+#worldMap {
+  width: 100%;
+  height: 550px;
+}
+
+
+/* =========================================================
+   LEAFLET CONTROLS
+========================================================= */
+
+.contact-page .leaflet-top.leaflet-right {
+  top: 15px;
+  right: 15px;
+}
+
+
+.contact-page .leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 3px 14px rgba(1, 20, 56, 0.12) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+
+.contact-page .leaflet-control-zoom a {
+  width: 34px !important;
+  height: 34px !important;
+  line-height: 34px !important;
+
+  color: var(--cev-dark) !important;
+  background: #ffffff !important;
+
+  border: none !important;
+  border-bottom: 1px solid #edf1f5 !important;
+
+  font-size: 20px !important;
+}
+
+
+.contact-page .leaflet-control-zoom a:last-child {
+  border-bottom: none !important;
+}
+
+
+.contact-page .leaflet-control-zoom a:hover {
+  background: #f5f8fc !important;
+}
+
+
+/* =========================================================
+   LEAFLET MAP TILES
+========================================================= */
+
+.contact-page .leaflet-container {
+  width: 100%;
+  height: 100%;
+
+  background: #eef4fb;
+
+  font-family: var(--cev-font);
+}
+
+
+/* Remove Leaflet attribution */
+
+.contact-page .leaflet-control-attribution {
+  display: none !important;
+}
+
+
+/* =========================================================
+   CUSTOM LOCATION MARKER
+========================================================= */
+
+.cev-marker-wrapper {
+  background: transparent !important;
+  border: 0 !important;
+}
+
+
+.cev-marker {
+  position: relative;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Outer animated ring */
+
+.cev-marker-pulse {
+  position: absolute;
+
+  width: 30px;
+  height: 30px;
+
+  left: 0;
+  top: 0;
+
+  border-radius: 50%;
+
+  background: rgba(3, 97, 235, 0.18);
+
+  animation: cev-map-pulse 2s infinite ease-out;
+}
+
+
+/* White ring */
+
+.cev-marker-ring {
+  position: absolute;
+
+  width: 22px;
+  height: 22px;
+
+  left: 4px;
+  top: 4px;
+
+  background: #ffffff;
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 2px 8px rgba(1, 20, 56, 0.18);
+}
+
+
+/* Actual blue location dot */
+
+.cev-marker-dot {
+  position: absolute;
+
+  width: 14px;
+  height: 14px;
+
+  left: 8px;
+  top: 8px;
+
+  background: #0361eb;
+
+  border-radius: 50%;
+
+  border: 2px solid #ffffff;
+
+  box-shadow:
+    0 2px 7px rgba(1, 20, 56, 0.3);
+}
+
+
+@keyframes cev-map-pulse {
+
+  0% {
+    transform: scale(0.6);
+    opacity: 0.75;
+  }
+
+  70% {
+    transform: scale(2);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+
+}
+
+
+/* =========================================================
+   LOCATION TOOLTIP
+========================================================= */
+
+.cev-location-tooltip {
+  background: transparent !important;
+
+  border: none !important;
+
+  box-shadow: none !important;
+
+  padding: 0 !important;
+
+  margin: 0 !important;
+}
+
+
+/* Remove Leaflet tooltip arrow */
+
+.cev-location-tooltip::before {
+  display: none !important;
+}
+
+
+/* Actual card */
+
+.cev-map-card {
+  width: 310px;
+  max-width: calc(100vw - 32px);
+
+  padding: 18px;
+
+  background: #ffffff;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 12px 30px rgba(1, 20, 56, 0.18);
+
+  color: var(--cev-dark);
+
+  font-family: var(--cev-font);
+
+  text-align: left;
+
+  border: 1px solid rgba(1, 20, 56, 0.06);
+}
+
+
+/* Country */
+
+.cev-map-country {
+  font-size: 17px;
+
+  line-height: 1.2;
+
+  font-weight: 800;
+
+  color: var(--cev-dark);
+
+  margin-bottom: 5px;
+}
+
+
+/* City */
+
+.cev-map-city {
+  font-size: 12px;
+
+  line-height: 1.4;
+
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+
+  text-transform: uppercase;
+
+  color: var(--cev-blue);
+
+  margin-bottom: 11px;
+}
+
+
+/* Address */
+
+.cev-map-address {
+  font-size: 13px;
+
+  line-height: 1.5;
+
+  color: #5f6772;
+
+  margin-bottom: 12px;
+}
+
+
+/* Contact section */
+
+.cev-map-contact {
+  padding-top: 11px;
+
+  border-top: 1px solid #edf1f5;
+}
+
+
+.cev-map-contact-row {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 5px;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+.cev-map-contact-row strong {
+  width: 48px;
+
+  min-width: 48px;
+
+  color: var(--cev-dark);
+}
+
+
+.cev-map-contact-row span {
+  color: #4f5965;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   ACTIVE MARKER
+========================================================= */
+
+.cev-marker-active .cev-marker-pulse {
+  animation-duration: 1s;
+
+  background: rgba(3, 97, 235, 0.28);
+}
+
+
+.cev-marker-active .cev-marker-dot {
+  transform: scale(1.12);
+}
+
+
+/* =========================================================
+   OFFICE LIST
+========================================================= */
+
+.office-card {
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.office-card:hover {
+  transform: translateY(-2px);
+}
+
+
+.office-card.active {
+  border-color: rgba(3, 97, 235, 0.35) !important;
+
+  box-shadow:
+    0 8px 24px rgba(3, 97, 235, 0.10);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767px) {
+
+  .contact-page .offices-map {
+    height: 400px;
+  }
+
+
+  #worldMap {
+    height: 400px;
+  }
+
+
+  .contact-page .leaflet-top.leaflet-right {
+    top: 10px;
+    right: 10px;
+  }
+
+
+  .cev-map-card {
+    width: 260px;
+
+    padding: 14px;
+  }
+
+
+  .cev-map-country {
+    font-size: 15px;
+  }
+
+
+  .cev-map-city {
+    font-size: 11px;
+  }
+
+
+  .cev-map-address {
+    font-size: 12px;
+  }
+
+
+  .cev-map-contact-row {
+    font-size: 11px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .cev-map-card {
+    width: 235px;
+  }
+
+}
