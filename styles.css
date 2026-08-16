@@ -169,7 +169,8 @@ nav a:hover {
     flex-direction: column;
     gap: 4px;
     position: fixed;
-    top: 74px;
+    /* top: 74px; */
+    top: 70px;
     left: 0;
     right: 0;
     background: rgba(255, 255, 255, 0.98);
@@ -1405,9 +1406,9 @@ footer {
 
 /* ===== GLOBAL MOBILE SAFETY ===== */
 img,
-svg,
 video,
-canvas {
+svg:not(.leaflet-zoom-animated),
+canvas:not(.leaflet-zoom-animated) {
     max-width: 100%;
     height: auto;
 }
@@ -1437,7 +1438,7 @@ header {
 
 @media (max-width: 420px) {
     header {
-        padding: 14px 4%;
+        padding: 10px 4%;
     }
 
     .logo-text {
@@ -1772,6 +1773,7 @@ span {
 @media (max-width: 768px) {
     .hero {
         padding-top: 75px;
+        padding-bottom: 0 !important;
     }
 
     .hero-btns {
@@ -3328,10 +3330,10 @@ nav a:not(.nav-cta):hover::after {
 
 /* DESKTOP — horizontal logo */
 .logo-img {
-    height: 45px;
+    height: 55px;
     /* controls the size; width auto-keeps ratio */
     width: auto;
-    max-width: 200px;
+    /* max-width: 200px; */
     object-fit: contain;
     display: block;
 }
@@ -3339,7 +3341,7 @@ nav a:not(.nav-cta):hover::after {
 /* MOBILE — vertical logo */
 @media (max-width: 767px) {
     .logo-img {
-        height: 44px;
+        height: 50px;
         /* vertical marks are taller — a bit more height */
         max-width: 180px;
     }
@@ -3733,13 +3735,13 @@ nav a:not(.nav-cta):hover::after {
 
 /* CRITICAL — your global reset (`svg { max-width:100%; height:auto }`)
    was collapsing the map SVG and rendering it tiny. Undo it here only. */
-.contact-page .offices-map svg,
+/* .contact-page .offices-map svg,
 .contact-page .jvm-container svg {
     width: 100% !important;
     height: 100% !important;
     max-width: none !important;
     display: block;
-}
+} */
 
 .contact-page .jvm-container {
     background: transparent;
@@ -4174,6 +4176,7 @@ html {
 .hero {
     height: auto;
     min-height: 0;
+    padding-bottom: 10px;
 }
 
 .hero-btns {
@@ -4454,7 +4457,6 @@ html {
 
 /* CRITICAL — the global reset (`svg { max-width:100%; height:auto }`)
    collapses the map SVG and renders it tiny. Undo it here only. */
-.contact-page .offices-map svg,
 .contact-page .jvm-container svg {
     width: 100% !important;
     height: 100% !important;
@@ -4906,7 +4908,7 @@ html {
 }
 
 .office-country {
-    padding-right: 96px;
+    /* padding-right: 96px; */
     /* keeps long names clear of the ribbon */
     font-size: 18px;
 }
@@ -4965,7 +4967,7 @@ html {
 
 .office-footer {
     margin-top: auto;
-    padding-top: 20px;  
+    padding-top: 20px;
 }
 
 .btn-map {
@@ -4996,7 +4998,7 @@ html {
         padding-right: 75px;
     }
 
-    .office-tag{
+    .office-tag {
         font-size: 14px;
     }
 }
@@ -5147,3 +5149,1060 @@ html {
         max-width: 100%;
     }
 }
+
+
+
+
+.presence-section {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    text-align: center;
+    margin: 28px auto 30px;
+}
+
+.presence-section .section-title {
+    margin: 0 0 10px;
+    font-size: 23px;
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    color: #111111;
+}
+
+.presence-section .section-title span {
+    color: #1456c5;
+    font-weight: 300;
+}
+
+.presence-flags {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 70px;
+}
+
+.presence-flags img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    display: block;
+    cursor: pointer;
+}
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 767px) {
+
+    .presence-section {
+        margin: 22px auto 24px;
+    }
+
+    .presence-section .section-title {
+        margin: 0 0 10px;
+        font-size: 23px;
+        letter-spacing: -0.5px;
+    }
+
+    .presence-flags {
+        gap: 45px;
+    }
+
+    .presence-flags img {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+
+
+/* map new styles */
+
+/* ============================================================
+   CEVOLVE AMCHARTS OFFICE TOOLTIP
+   ============================================================ */
+
+.cevolve-map-tooltip {
+    width: 340px;
+    max-width: 340px;
+
+    padding: 2px 0;
+
+    font-family: Helvetica, Arial, sans-serif;
+
+    color: #011438;
+
+    line-height: 1.5;
+}
+
+.cevolve-map-country {
+    font-size: 22px;
+    font-weight: 800;
+
+    color: #011438;
+
+    margin-bottom: 4px;
+}
+
+.cevolve-map-city {
+    font-size: 13px;
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+
+    color: #0361eb;
+
+    margin-bottom: 22px;
+}
+
+.cevolve-map-address {
+    font-size: 16px;
+
+    line-height: 1.6;
+
+    color: #666;
+
+    margin-bottom: 18px;
+}
+
+.cevolve-map-contact {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    font-size: 15px;
+}
+
+.cevolve-map-contact > div {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+}
+
+.cevolve-map-contact strong {
+    min-width: 48px;
+
+    color: #666;
+
+    font-weight: 700;
+}
+
+.cevolve-map-contact span {
+    color: #011438;
+
+    word-break: break-word;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+    .cevolve-map-tooltip {
+        width: 260px;
+        max-width: 260px;
+    }
+
+    .cevolve-map-country {
+        font-size: 18px;
+    }
+
+    .cevolve-map-city {
+        font-size: 11px;
+
+        margin-bottom: 16px;
+    }
+
+    .cevolve-map-address {
+        font-size: 14px;
+    }
+
+    .cevolve-map-contact {
+        font-size: 13px;
+    }
+
+}
+
+
+
+
+
+/* ================================================================
+   AMCHARTS CONTACT MAP
+   ================================================================ */
+
+.contact-page .offices-map {
+    position: relative;
+    overflow: visible;
+}
+
+/* amCharts root must fill the existing map area */
+/* Removed: `.offices-map > div { width/height:100% !important; }`.
+   That amCharts-only rule overrides Leaflet's map and control panes. */
+
+/* Remove old jsVectorMap-specific styling */
+.contact-page .jvm-zoom-btn,
+.contact-page .jvm-region,
+.contact-page .jvm-marker,
+.contact-page .jvm-container {
+    /* no longer used by amCharts */
+}
+
+
+/* ================================================================
+   AMCHARTS OFFICE TOOLTIP
+   ================================================================ */
+
+.cevolve-map-card {
+    width: 350px;
+    max-width: calc(100vw - 40px);
+    padding: 22px 24px;
+    font-family: var(--font, Arial, sans-serif);
+    background: #fff;
+    color: #011438;
+}
+
+.cevolve-map-card-country {
+    font-size: 20px;
+    line-height: 1.25;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.cevolve-map-card-city {
+    color: #0361eb;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+
+.cevolve-map-card-city span {
+    margin: 0 5px;
+}
+
+.cevolve-map-card-address {
+    color: #666;
+    font-size: 15px;
+    line-height: 1.65;
+    margin-bottom: 18px;
+}
+
+.cevolve-tip-line {
+    margin: 0;
+}
+
+.cevolve-map-card-contact {
+    border-top: 1px solid #edf1f5;
+    padding-top: 14px;
+}
+
+.cevolve-map-card-contact > div {
+    display: flex;
+    gap: 10px;
+    margin-top: 7px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.cevolve-map-card-contact strong {
+    min-width: 48px;
+    color: #011438;
+}
+
+.cevolve-map-card-contact span {
+    color: #4f5965;
+    overflow-wrap: anywhere;
+}
+
+
+/* ================================================================
+   MOBILE TOOLTIP
+   ================================================================ */
+
+@media (max-width: 767px) {
+
+    .cevolve-map-card {
+        width: 290px;
+        padding: 18px;
+    }
+
+    .cevolve-map-card-country {
+        font-size: 17px;
+    }
+
+    .cevolve-map-card-address {
+        font-size: 13px;
+    }
+
+    .cevolve-map-card-contact > div {
+        font-size: 13px;
+    }
+
+}
+
+
+
+
+/* =========================================================
+   CEvolve Offices Map - Leaflet
+   ========================================================= */
+
+.contact-page .offices-map-section {
+  position: relative;
+  width: 100%;
+  background: #ffffff;
+}
+
+.contact-page .offices-map {
+  width: 100%;
+  height: 550px;
+  position: relative;
+  background: #ffffff;
+}
+
+/* Leaflet map must have an actual height */
+#worldMap {
+  width: 100%;
+  height: 550px;
+  background: #ffffff;
+}
+
+/* Zoom buttons */
+.leaflet-top.leaflet-right {
+  top: 15px;
+  right: 15px;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+.leaflet-control-zoom a {
+  width: 34px !important;
+  height: 34px !important;
+  line-height: 34px !important;
+  color: #011438 !important;
+  background: #ffffff !important;
+  border: none !important;
+  border-bottom: 1px solid #edf1f5 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: #f5f8fc !important;
+}
+
+/* Remove default Leaflet marker shadow */
+.custom-pin-wrapper {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* =========================================================
+   CUSTOM LOCATION POINTER
+   ========================================================= */
+
+.custom-pin-container {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+
+.pulse-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  background: rgba(3, 97, 235, 0.35);
+  border-radius: 50%;
+  animation: leaflet-pulse 1.8s infinite ease-out;
+}
+
+.pin-dot {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 14px;
+  height: 14px;
+  background: #0361eb;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(1, 20, 56, 0.3);
+}
+
+@keyframes leaflet-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   TOOLTIP
+   ========================================================= */
+
+.leaflet-tooltip.cev-am-tooltip-override {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+  display: none !important;
+}
+
+.cev-am-tip {
+  width: 300px;
+  max-width: calc(100vw - 32px);
+  padding: 16px 18px;
+
+  font-family: Helvetica, Arial, sans-serif;
+
+  background: #ffffff;
+  color: #011438;
+
+  border-radius: 8px;
+
+  box-shadow:
+    0 10px 25px rgba(1, 20, 56, 0.18);
+
+  text-align: left;
+}
+
+.cev-am-tip-country {
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 800;
+
+  color: #011438;
+
+  margin-bottom: 4px;
+}
+
+.cev-am-tip-city {
+  color: #0361eb;
+
+  font-size: 12px;
+  line-height: 1.45;
+
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+
+  text-transform: uppercase;
+
+  margin-bottom: 10px;
+}
+
+.cev-am-tip-address {
+  color: #5f6772;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  margin-bottom: 10px;
+}
+
+.cev-am-tip-contact {
+  padding-top: 10px;
+
+  border-top: 1px solid #edf1f5;
+}
+
+.cev-am-tip-contact > div {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 4px;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.cev-am-tip-contact strong {
+  min-width: 44px;
+  color: #011438;
+}
+
+.cev-am-tip-contact span {
+  color: #4f5965;
+  word-break: break-word;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+
+  .contact-page .offices-map,
+  #worldMap {
+    height: 400px;
+  }
+
+  .cev-am-tip {
+    width: 250px;
+    padding: 14px;
+  }
+}
+
+
+
+/* =========================================================
+   CEvolve Offices Map - Leaflet
+   ========================================================= */
+
+.contact-page .offices-map-section {
+  position: relative;
+  width: 100%;
+  background: #ffffff;
+}
+
+.contact-page .offices-map {
+  width: 100%;
+  height: 550px;
+  position: relative;
+  background: #ffffff;
+}
+
+/* Leaflet map must have an actual height */
+#worldMap {
+  width: 100%;
+  height: 550px;
+  background: #ffffff;
+}
+
+/* Zoom buttons */
+.leaflet-top.leaflet-right {
+  top: 15px;
+  right: 15px;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+.leaflet-control-zoom a {
+  width: 34px !important;
+  height: 34px !important;
+  line-height: 34px !important;
+  color: #011438 !important;
+  background: #ffffff !important;
+  border: none !important;
+  border-bottom: 1px solid #edf1f5 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: #f5f8fc !important;
+}
+
+/* Remove default Leaflet marker shadow */
+.custom-pin-wrapper {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* =========================================================
+   CUSTOM LOCATION POINTER
+   ========================================================= */
+
+.custom-pin-container {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+
+.pulse-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  background: rgba(3, 97, 235, 0.35);
+  border-radius: 50%;
+  animation: leaflet-pulse 1.8s infinite ease-out;
+}
+
+.pin-dot {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 14px;
+  height: 14px;
+  background: #0361eb;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(1, 20, 56, 0.3);
+}
+
+@keyframes leaflet-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   TOOLTIP
+   ========================================================= */
+
+.leaflet-tooltip.cev-am-tooltip-override {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+  display: none !important;
+}
+
+.cev-am-tip {
+  width: 300px;
+  max-width: calc(100vw - 32px);
+  padding: 16px 18px;
+
+  font-family: Helvetica, Arial, sans-serif;
+
+  background: #ffffff;
+  color: #011438;
+
+  border-radius: 8px;
+
+  box-shadow:
+    0 10px 25px rgba(1, 20, 56, 0.18);
+
+  text-align: left;
+}
+
+.cev-am-tip-country {
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 800;
+
+  color: #011438;
+
+  margin-bottom: 4px;
+}
+
+.cev-am-tip-city {
+  color: #0361eb;
+
+  font-size: 12px;
+  line-height: 1.45;
+
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+
+  text-transform: uppercase;
+
+  margin-bottom: 10px;
+}
+
+.cev-am-tip-address {
+  color: #5f6772;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  margin-bottom: 10px;
+}
+
+.cev-am-tip-contact {
+  padding-top: 10px;
+
+  border-top: 1px solid #edf1f5;
+}
+
+.cev-am-tip-contact > div {
+  display: flex;
+
+  gap: 10px;
+
+  margin-top: 4px;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.cev-am-tip-contact strong {
+  min-width: 44px;
+  color: #011438;
+}
+
+.cev-am-tip-contact span {
+  color: #4f5965;
+  word-break: break-word;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+
+  .contact-page .offices-map,
+  #worldMap {
+    height: 400px;
+  }
+
+  .cev-am-tip {
+    width: 250px;
+    padding: 14px;
+  }
+}/* Cevolve contact-page Leaflet map; load after styles.css. */
+.contact-page .offices-map-section { position: relative; width: 100%; background: #fff; }
+.contact-page .offices-map { width: 100%; height: 550px; position: relative; background: #fff; overflow: hidden; }
+.contact-page .offices-map .leaflet-container { font-family: var(--font, Helvetica, Arial, sans-serif); }
+.leaflet-top.leaflet-right { top: 15px; right: 15px; }
+.leaflet-control-zoom { border: 0 !important; box-shadow: 0 2px 10px rgba(0,0,0,.08) !important; border-radius: 8px !important; overflow: hidden; }
+.leaflet-control-zoom a { width: 34px !important; height: 34px !important; line-height: 34px !important; color: var(--charcoal,#011438) !important; background: #fff !important; border: 0 !important; border-bottom: 1px solid #edf1f5 !important; }
+.leaflet-control-zoom a:hover { background: #f5f8fc !important; }
+.custom-pin-wrapper { background: transparent !important; border: 0 !important; }
+.custom-pin-container { position: relative; width: 26px; height: 26px; cursor: pointer; }
+.pulse-ring { position: absolute; inset: 0; width: 26px; height: 26px; background: rgba(3,97,235,.35); border-radius: 50%; animation: leaflet-pulse 1.8s infinite ease-out; }
+.pin-dot { position: absolute; top: 6px; left: 6px; width: 14px; height: 14px; background: var(--blue,#0361eb); border: 2px solid #fff; border-radius: 50%; box-shadow: 0 2px 6px rgba(1,20,56,.3); }
+@keyframes leaflet-pulse { from { transform: scale(.6); opacity: .8; } to { transform: scale(2.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .pulse-ring { animation: none; display: none; } }
+.leaflet-tooltip.cev-office-tooltip { background: transparent !important; border: 0 !important; box-shadow: none !important; padding: 0 !important; }
+.leaflet-tooltip.cev-office-tooltip::before { display: none !important; }
+.cev-am-tip { width: 300px; max-width: calc(100vw - 32px); padding: 16px 18px; font-family: var(--font,Helvetica,Arial,sans-serif); background: #fff; color: var(--charcoal,#011438); border-radius: 8px; box-shadow: 0 10px 25px rgba(1,20,56,.18); text-align: left; }
+.cev-am-tip-country { font-size: 16px; line-height: 1.2; font-weight: 800; margin-bottom: 4px; }
+.cev-am-tip-city { color: var(--blue,#0361eb); font-size: 12px; line-height: 1.45; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 10px; }
+.cev-am-tip-address { color: #5f6772; font-size: 13px; line-height: 1.5; margin-bottom: 10px; }
+.cev-am-tip-contact { padding-top: 10px; border-top: 1px solid #edf1f5; }
+.cev-am-tip-contact > div { display: flex; gap: 10px; margin-top: 4px; font-size: 12px; line-height: 1.5; }
+.cev-am-tip-contact strong { min-width: 44px; color: var(--charcoal,#011438); }
+.cev-am-tip-contact span { color: #4f5965; overflow-wrap: anywhere; }
+@media (max-width: 767px) { .contact-page .offices-map { height: 400px; } .cev-am-tip { width: 250px; padding: 14px; } }
+
+/* Small Indian sub-location name */
+.leaflet-tooltip.cev-location-name-tooltip {
+  padding: 6px 10px !important;
+  background: #011438 !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 5px 15px rgba(1, 20, 56, 0.2) !important;
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  font-weight: 600 !important;
+white-space: nowrap !important;
+  z-index: 1200 !important;
+}
+
+.leaflet-tooltip.cev-location-name-tooltip::before {
+  display: none !important;
+}
+
+/* Increase contact-person icon size */
+.leaflet-tooltip .cev-am-tip-person i,
+.office-contact .office-person i {
+    width: 18px;
+    flex: 0 0 18px;
+    font-size: 18px !important;
+    line-height: 1;
+    color: #0361eb;
+}
+
+
+/* Keep office tooltip inside the visible map/screen */
+.leaflet-tooltip.cev-office-tooltip {
+  max-width: calc(100vw - 24px) !important;
+  white-space: normal !important;
+}
+
+.leaflet-tooltip.cev-office-tooltip .cev-am-tip {
+  max-width: calc(100vw - 32px) !important;
+}
+
+/* =====================================================================
+   FINAL CONTACT-PAGE LEAFLET LAYER
+   One source of truth for map sizing, controls, pointers and scrollbar.
+   ===================================================================== */
+
+body.contact-page > header {
+  position: sticky;
+  top: 0;
+  z-index: 5000 !important;
+  background: #ffffff;
+}
+
+body.contact-page > .offices-map-section {
+  position: relative;
+  width: 100%;
+  height: 550px;
+  min-height: 550px;
+  max-height: 550px;
+  margin: 0;
+  padding: 0;
+  z-index: 0;
+  isolation: isolate;
+  contain: layout paint;
+  overflow: hidden;
+  overflow-anchor: none;
+  background: #ffffff;
+}
+
+.contact-page #worldMap.offices-map,
+.contact-page #worldMap.leaflet-container {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  aspect-ratio: auto !important;
+  overflow: hidden !important;
+  overflow-anchor: none;
+  background: #ffffff;
+}
+
+/* Never apply the site's responsive media sizing to Leaflet's internal
+   transformed vector layer. */
+.contact-page #worldMap svg,
+.contact-page #worldMap canvas,
+.contact-page #worldMap .leaflet-zoom-animated {
+  max-width: none !important;
+  max-height: none !important;
+}
+
+/* The generated control container is a separate overlay. It is not inside
+   .leaflet-map-pane and therefore never moves when the map zooms. */
+.contact-page #worldMap .leaflet-control-container {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1000 !important;
+  pointer-events: none !important;
+}
+
+.contact-page #worldMap .leaflet-top.leaflet-right {
+  position: absolute !important;
+  top: 15px !important;
+  right: 15px !important;
+  bottom: auto !important;
+  left: auto !important;
+  width: 34px !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 1001 !important;
+  transform: none !important;
+  transition: none !important;
+  pointer-events: auto !important;
+}
+
+.contact-page #worldMap .leaflet-control-zoom,
+.contact-page #worldMap .leaflet-control-zoom:hover,
+.contact-page #worldMap .leaflet-control-zoom:focus-within,
+.contact-page #worldMap .leaflet-control-zoom:active {
+  position: static !important;
+  float: none !important;
+  display: block !important;
+  width: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(1, 20, 56, 0.12) !important;
+  transform: none !important;
+  transition: none !important;
+  pointer-events: auto !important;
+}
+
+.contact-page #worldMap .leaflet-control-zoom a,
+.contact-page #worldMap .leaflet-control-zoom a:hover,
+.contact-page #worldMap .leaflet-control-zoom a:focus,
+.contact-page #worldMap .leaflet-control-zoom a:active {
+  position: static !important;
+  display: block !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 34px !important;
+  text-align: center !important;
+  font-family: Arial, sans-serif !important;
+  font-size: 22px !important;
+  font-weight: 400 !important;
+  color: #011438 !important;
+  background: #ffffff !important;
+  border: 0 !important;
+  border-bottom: 1px solid #edf1f5 !important;
+  border-radius: 0 !important;
+  outline-offset: -2px;
+  text-decoration: none !important;
+  transform: none !important;
+  transition: none !important;
+  touch-action: manipulation;
+}
+
+.contact-page #worldMap .leaflet-control-zoom a:last-child {
+  border-bottom: 0 !important;
+}
+
+.contact-page #worldMap .leaflet-control-zoom a:hover,
+.contact-page #worldMap .leaflet-control-zoom a:focus-visible {
+  color: #0361eb !important;
+  background: #f5f8fc !important;
+}
+
+/* Old manually generated controls are intentionally disabled. */
+.contact-page #worldMap .cev-map-zoom,
+.contact-page #worldMap .jvm-zoom-btn {
+  display: none !important;
+}
+
+/* Keep office details above pointers but inside the clipped map. */
+.contact-page #worldMap .leaflet-marker-pane {
+  z-index: 600 !important;
+}
+
+.contact-page #worldMap .leaflet-tooltip-pane {
+  z-index: 1100 !important;
+}
+
+.contact-page #worldMap .leaflet-tooltip.cev-office-tooltip {
+  z-index: 1101 !important;
+}
+
+.contact-page #worldMap .cev-am-tip {
+  position: relative;
+  z-index: 1102 !important;
+}
+
+/* Decorative ripple is a separate non-interactive marker. */
+.contact-page #worldMap .office-pulse-wrapper {
+  width: 26px !important;
+  height: 26px !important;
+  border: 0 !important;
+  background: transparent !important;
+  pointer-events: none !important;
+}
+
+.contact-page #worldMap .office-pulse-ring {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(3, 97, 235, 0.35);
+  animation: leaflet-pulse 1.8s infinite ease-out;
+  pointer-events: none !important;
+}
+
+.contact-page #worldMap .office-dot-wrapper {
+  width: 14px !important;
+  height: 14px !important;
+  border: 0 !important;
+  background: transparent !important;
+  cursor: pointer;
+  pointer-events: auto !important;
+}
+
+.contact-page #worldMap .office-pin-dot {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #0361eb;
+  box-shadow: 0 2px 6px rgba(1, 20, 56, 0.3);
+  cursor: pointer;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.office-contact a[href^="tel:"] {
+  color: inherit;
+  text-decoration: none;
+}
+
+.office-contact a[href^="tel:"]:hover {
+  color: #0361eb;
+  text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+  body.contact-page > .offices-map-section {
+    height: 400px;
+    min-height: 400px;
+    max-height: 400px;
+  }
+
+  .contact-page #worldMap .leaflet-top.leaflet-right {
+    top: 10px !important;
+    right: 10px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-page #worldMap .office-pulse-ring {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Desktop page scrollbar in Cevolve blue. */
+@media (min-width: 768px) {
+  html {
+    color-scheme: light;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: #0361eb #f1f1f1;
+  }
+
+  html::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  html::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  html::-webkit-scrollbar-thumb {
+    min-height: 40px;
+    background: #0361eb;
+    border-radius: 8px;
+  }
+
+  html::-webkit-scrollbar-thumb:hover {
+    background: #002a61;
+  }
+}
+

@@ -1,669 +1,939 @@
-// /* =====================================================================
-//    CEVOLVE · CONTACT-US PAGE
-//    1. LOCATIONS  → edit addresses / coords here only
-//    2. World map: inert countries, rippling markers, address tooltip
-//    3. Office cards (View on map → Google Maps)
-//    4. Header + form (same EmailJS flow as index.html)
-//    ===================================================================== */
-
-// /* ---------------------------------------------------------------------
-//    1 · OFFICE DATA  ← the only block you normally need to touch.
-//    coords: [latitude, longitude]  (Google Maps: right-click a pin →
-//    the first number is lat, the second is lng)
-//    NOTE: street lines below are placeholders — swap in the real ones.
-//    --------------------------------------------------------------------- */
-// // const LOCATIONS = [
-// //   {
-// //     country: "India",
-// //     city: "Mumbai",
-// //     tag: "Headquarters",
-// //     address: [
-// //       "Office No. 402, Business Hub",
-// //       "Andheri East, Mumbai 400069",
-// //       "Maharashtra, India",
-// //     ],
-// //     tel: "+91 98191 33331",
-// //     email: "info@cevolvetechnologies.com",
-// //     coords: [19.076, 72.8777],
-// //   },
-// //   {
-// //     country: "United Arab Emirates",
-// //     city: "Dubai",
-// //     tag: "Sales Office",
-// //     address: [
-// //       "Business Bay, Bay Square",
-// //       "Building 7, Office 210",
-// //       "Dubai, United Arab Emirates",
-// //     ],
-// //     tel: "+971 4 000 0000",
-// //     email: "info@cevolvetechnologies.com",
-// //     coords: [25.2048, 55.2708],
-// //   },
-// //   {
-// //     country: "United Arab Emirates",
-// //     city: "Abu Dhabi",
-// //     tag: "",
-// //     address: ["Al Maryah Island", "Abu Dhabi, United Arab Emirates"],
-// //     tel: "+971 2 000 0000",
-// //     email: "info@cevolvetechnologies.com",
-// //     coords: [24.4539, 54.3773],
-// //   },
-// //   {
-// //     country: "Saudi Arabia",
-// //     city: "Riyadh",
-// //     tag: "",
-// //     address: ["King Fahd Road, Olaya District", "Riyadh 12211, Saudi Arabia"],
-// //     tel: "+966 11 000 0000",
-// //     email: "info@cevolvetechnologies.com",
-// //     coords: [24.7136, 46.6753],
-// //   },
-// //   {
-// //     country: "Qatar",
-// //     city: "Doha",
-// //     tag: "",
-// //     address: ["West Bay, Al Dafna", "Doha, Qatar"],
-// //     tel: "+974 4000 0000",
-// //     email: "info@cevolvetechnologies.com",
-// //     coords: [25.2854, 51.531],
-// //   },
-// // ];
-
-// /* ---------------------------------------------------------------------
-//    1 · OFFICE DATA  ← the only block you normally need to touch.
-//    coords: [latitude, longitude]  (Google Maps: right-click a pin →
-//    the first number is lat, the second is lng)
-//    Leave `tel` as "" if you don't have a number yet — the line is skipped.
-//    --------------------------------------------------------------------- */
 // const LOCATIONS = [
 //   {
 //     country: "India",
-//     city: "Dombivli East",
-//     tag: "Headquarters",
+//     city: "Thane",
+//     tag: "Global HQ & Delivery",
+//     contactName: "Pankaj Cevolve",
 //     address: [
-//       "Casa Primia G Wing",
-//       "Lakeshore Greens, Palava Phase 2",
-//       "Dombivli East, Maharashtra 421204, India",
+//       "Casa Primia-G Wing",
+//       "Lakeshore Greens, Palava Phase-II",
+//       "Thane, Maharashtra 421204, India",
 //     ],
-//     tel: "+91 98191 33331",
+//     tel: "+91-96191 33331",
 //     email: "info@cevolvetechnologies.com",
 //     coords: [19.170027, 73.111413],
 //   },
 //   {
 //     country: "United Arab Emirates",
 //     city: "Dubai",
-//     tag: "UAE Office",
+//     tag: "Tech & Delivery",
+//     contactName: "Ambrish Cevolve",
 //     address: [
 //       "Building A3, 3rd Floor",
 //       "Business Park, Dubai South",
 //       "Dubai, United Arab Emirates",
 //     ],
-//     tel: "",
+//     tel: "+971-508027984",
 //     email: "info@cevolvetechnologies.com",
 //     coords: [24.908952, 55.118497],
 //   },
-
-//   /* Australia — add the address and this office gets a marker + card
-//      automatically. The country is already highlighted via OFFICE_REGIONS.
-//   ,{
+//   {
 //     country: "Australia",
-//     city: "",
-//     tag: "",
-//     address: ["", ""],
-//     tel: "",
+//     city: "Cranbourne West",
+//     tag: "Regional Office",
+//     contactName: "Satish Cevolve",
+//     address: [
+//       "2 Comte Cl",
+//       "Cranbourne West VIC 3977",
+//       "Victoria, Australia",
+//     ],
+//     tel: "+61 481 540 530",
 //     email: "info@cevolvetechnologies.com",
-//     coords: [0, 0]
-//   }
-//   */
+//     coords: [-38.1021034, 145.2577401],
+//   },
 // ];
 
-// /* Countries filled on the map — ISO 3166-1 alpha-2 codes.
-//    AU is listed even though its address isn't in LOCATIONS yet. */
 // const OFFICE_REGIONS = ["IN", "AE", "AU"];
 
-// /* small helper — Google Maps link for a location */
-// function gmapsUrl(loc) {
+// /* Regional coverage: Middle East and New Zealand. */
+// const COVERAGE_REGIONS = [
+//   "SA", // Saudi Arabia
+//   "QA", // Qatar
+//   "KW", // Kuwait
+//   "OM", // Oman
+//   "BH", // Bahrain
+//   "JO", // Jordan
+//   "LB", // Lebanon
+//   "IQ", // Iraq
+//   "YE", // Yemen
+//   "IR", // Iran
+//   "IL", // Israel
+//   "PS", // Palestine
+//   "SY", // Syria
+//   "TR", // Turkey
+//   "EG", // Egypt
+//   "NZ", // New Zealand
+// ];
+
+// /* Small Indian presence markers. These show only the location name. */
+// const INDIA_SUB_LOCATIONS = [
+//   {
+//     name: "Punjab",
+//     coords: [31.1471, 75.3412],
+//   },
+//   {
+//     name: "Delhi",
+//     coords: [28.6139, 77.209],
+//   },
+//   {
+//     name: "Lucknow, Uttar Pradesh",
+//     coords: [26.8467, 80.9462],
+//   },
+//   {
+//     name: "Bengaluru",
+//     coords: [12.9716, 77.5946],
+//   },
+// ];
+
+// /* ================================================================
+//    GOOGLE MAPS LINK
+//    ================================================================ */
+
+// function gmapsUrl(location) {
 //   return (
 //     "https://www.google.com/maps/search/?api=1&query=" +
-//     loc.coords[0] +
+//     location.coords[0] +
 //     "," +
-//     loc.coords[1]
+//     location.coords[1]
 //   );
 // }
 
-// /* ---------------------------------------------------------------------
-//    2 · WORLD MAP — inert countries, zoom buttons, pulsing markers,
-//        and our own edge-aware address card.
+// /* ================================================================
+//    ESCAPE HTML
+//    ================================================================ */
 
-//    NOTE: every style this section needs is injected below, so the overlay
-//    cannot be broken by rule ordering in styles.css.
-//    --------------------------------------------------------------------- */
-// (function () {
-//   const mapEl = document.getElementById("worldMap");
-//   if (!mapEl) return;
+// function escapeHtml(value) {
+//   const element = document.createElement("div");
 
-//   if (typeof jsVectorMap === "undefined") {
-//     mapEl.classList.add("is-unavailable");
-//     console.warn("[cevolve] jsVectorMap did not load — check the CDN tags.");
+//   element.textContent =
+//     value === null || value === undefined ? "" : String(value);
+
+//   return element.innerHTML;
+// }
+
+// /* ================================================================
+//    LEAFLET OFFICE MAP
+//    ================================================================ */
+
+// (function initializeOfficeMap() {
+//   const mapElement = document.getElementById("worldMap");
+
+//   if (!mapElement) {
 //     return;
 //   }
 
-//   /* brand colours read straight from :root in styles.css */
-//   const css = getComputedStyle(document.documentElement);
-//   const v = (name, fallback) => css.getPropertyValue(name).trim() || fallback;
-//   const BLUE = v("--blue", "#0361EB");
-//   const NAVY = v("--charcoal", "#011438");
-//   const ACCENT = v("--accent", "#00A5FA");
-//   const MUTED = v("--muted", "#6D6D6D");
-//   const FONT = v("--font", "Helvetica, Arial, sans-serif");
+//   if (
+//     typeof L === "undefined" ||
+//     typeof am5geodata_worldLow === "undefined"
+//   ) {
+//     mapElement.classList.add("is-unavailable");
 
-//   const DARK = v("--dark", "#002A61");
+//     console.warn(
+//       "[Cevolve] Leaflet or world geodata could not be loaded."
+//     );
 
-//   const reduceMotion = window.matchMedia(
-//     "(prefers-reduced-motion: reduce)",
+//     return;
+//   }
+
+//   const isMobile = window.matchMedia(
+//     "(max-width: 767px)"
 //   ).matches;
-//   /* hover and touch are separate questions — conflating them made the
-//      marker taps fire twice on phones */
-//   const hasHover = window.matchMedia(
-//     "(hover: hover) and (pointer: fine)",
-//   ).matches;
-//   const isTouch = !hasHover || window.matchMedia("(max-width: 767px)").matches;
-//   const HIT = isTouch ? 44 : 34;
 
-//   /* ---- self-contained styles (appended last, so they always win) ---- */
-//   (function injectStyles() {
-//     if (document.getElementById("cev-map-styles")) return;
-//     const s = document.createElement("style");
-//     s.id = "cev-map-styles";
-//     s.textContent =
-//       ".jvm-tooltip{display:none!important}" +
-//       ".cev-layer{position:absolute;inset:0;z-index:5;pointer-events:none}" +
-//       ".cev-pulse{position:absolute;width:0;height:0}" +
-//       ".cev-pulse i{position:absolute;left:0;top:0;width:18px;height:18px;" +
-//       "margin:-9px 0 0 -9px;border:2px solid " + BLUE + ";border-radius:50%;" + +
-//       ACCENT +
-//       ";border-radius:50%;" +
-//       "pointer-events:none;animation:cevPulse 2.4s ease-out infinite}" +
-//       ".cev-pulse i:nth-child(2){animation-delay:1.2s}" +
-//       "@keyframes cevPulse{0%{transform:scale(1);opacity:.8;border-width:2px}" +
-//       "100%{transform:scale(2.9);opacity:0;border-width:.5px}}" +
-//       ".cev-hit{position:absolute;left:0;top:0;width:" +
-//       HIT +
-//       "px;height:" +
-//       HIT +
-//       "px;" +
-//       "margin:" +
-//       -HIT / 2 +
-//       "px 0 0 " +
-//       -HIT / 2 +
-//       "px;padding:0;border:0;" +
-//       "border-radius:50%;background:transparent;cursor:pointer;pointer-events:auto;" +
-//       "touch-action:manipulation;-webkit-tap-highlight-color:transparent;" +
-//       "-webkit-appearance:none;appearance:none}" +
-//       ".cev-hit:focus-visible{outline:2px solid " + BLUE + ";outline-offset:2px}" + +
-//       ACCENT +
-//       ";outline-offset:2px}" +
-//       ".cev-tip{position:absolute;left:0;top:0;z-index:40;display:none;" +
-//       "width:max-content;max-width:min(320px,calc(100% - 24px));padding:16px 18px;" +
-//       "background:#fff;border:1px solid #e8edf2;border-radius:12px;" +
-//       "box-shadow:0 18px 44px rgba(1,20,56,.18);font-family:" +
-//       FONT +
-//       ";" +
-//       "font-size:14px;line-height:1.65;color:" +
-//       MUTED +
-//       ";text-align:left;" +
-//       "pointer-events:none}" +
-//       ".cev-tip.is-open{display:block}" +
-//       ".cev-tip .mt-country{display:block;font-size:16px;font-weight:800;color:" +
-//       NAVY +
-//       "}" +
-//       ".cev-tip .mt-city{display:block;font-size:11.5px;font-weight:700;letter-spacing:1.2px;" +
-//       "text-transform:uppercase;color:" +
-//       BLUE +
-//       ";margin-bottom:10px}" +
-//       ".cev-tip .mt-address{display:block;margin-bottom:10px}" +
-//       ".cev-tip .mt-line{display:block;font-size:13.5px;color:" +
-//       NAVY +
-//       "}" +
-//       ".cev-tip .mt-line strong{color:" +
-//       MUTED +
-//       ";font-weight:600;margin-right:4px}" +
-//       "@media (prefers-reduced-motion: reduce){.cev-pulse i{animation:none;opacity:0}}";
-//     document.head.appendChild(s);
-//   })();
+//   const isTouchDevice =
+//     navigator.maxTouchPoints > 0 ||
+//     window.matchMedia("(pointer: coarse)").matches;
 
-//   const map = new jsVectorMap({
-//     selector: "#worldMap",
-//     map: "world",
-//     backgroundColor: "transparent",
+//   const supportsHover =
+//     !isTouchDevice &&
+//     window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-//     /* zoom via the buttons only — the wheel keeps scrolling the page.
-//        `draggable` is the real option name (there is no `panOnDrag`), and it
-//        is off on touch so the map never eats vertical page scroll. */
-//     zoomOnScroll: false,
-//     zoomButtons: true,
-//     zoomMin: 1,
-//     zoomMax: 8,
-//     draggable: !isTouch,
-//     regionsSelectable: false,
-
-//     // regionStyle: {
-//     //   initial: { fill: BLUE, stroke: "#fff", strokeWidth: 0.4, fillOpacity: 1 },
-//     //   hover: { fill: BLUE, fillOpacity: 1 } /* countries never react */,
-//     // },
-
-//     regionStyle: {
-//      initial: { r: 8, fill: BLUE, stroke: "#fff", strokeWidth: 2.5, fillOpacity: 1 },
-//       hover: { fill: "none", fillOpacity: 1 } /* countries never react */,
-//       selected: {
-//         fill: BLUE,
-//         fillOpacity: 0.16,
-//         stroke: DARK,
-//         strokeWidth: 0.7,
-//       },
-//     },
-//     selectedRegions: OFFICE_REGIONS,
-
-//     markers: LOCATIONS.map((l) => ({
-//       name: l.city + ", " + l.country,
-//       coords: l.coords,
-//     })),
-
-//     markerStyle: {
-//       initial: {
-//         r: 8,
-//         fill: NAVY,
-//         stroke: "#fff",
-//         strokeWidth: 2.5,
-//         fillOpacity: 1,
-//       },
-//     },
-
-//     /* both built-in tooltips are suppressed: no country names, and the
-//        marker card is drawn by us so it can flip away from the edges */
-//     onRegionTooltipShow(event) {
-//       event.preventDefault();
-//     },
-//     onMarkerTooltipShow(event) {
-//       event.preventDefault();
-//     },
-//     onViewportChange() {
-//       sync(900);
-//     },
+//   const map = L.map(mapElement, {
+//     attributionControl: false,
+//     zoomControl: false,
+//     scrollWheelZoom: false,
+//     doubleClickZoom: false,
+//     dragging: true,
+//     tap: true,
+//     minZoom: 1,
+//     maxZoom: 8,
+//     zoomSnap: 0.25,
+//     zoomDelta: 0.5,
+//     worldCopyJump: false,
 //   });
 
-//   /* ---- overlays: pulse rings + tap targets (under) and the card (over) ---- */
-//   const layer = document.createElement("div");
-//   layer.className = "cev-layer";
-//   mapEl.appendChild(layer);
+//   /* Temporary position before fitBounds calculates final viewport. */
+//   map.setView([10, 90], 2);
 
-//   const tip = document.createElement("div");
-//   tip.className = "cev-tip";
-//   mapEl.appendChild(tip);
+//   /* Genuine Leaflet zoom control, permanently anchored top-right. */
+//   const zoomControl = L.control.zoom({
+//     position: "topright",
+//   }).addTo(map);
 
-//   let markers = [];
-//   let pulses = [];
-//   let openIndex = -1;
+//   /* Leaflet renders the zoom buttons as anchors with href="#". Removing
+//      that href prevents desktop browsers from scrolling the document to
+//      the top when + or - is clicked. The Leaflet zoom handlers continue
+//      to work normally. */
+//   zoomControl
+//     .getContainer()
+//     .querySelectorAll("a")
+//     .forEach(function prepareZoomButton(button) {
+//       button.removeAttribute("href");
+//       button.setAttribute("role", "button");
+//       button.setAttribute("tabindex", "0");
 
-//   function findMarkers() {
-//     const svg = mapEl.querySelector("svg");
-//     if (!svg) return [];
-//     /* markers are the only <circle>s here — regions are all <path> */
-//     let list = svg.querySelectorAll(".jvm-marker");
-//     if (!list.length) list = svg.querySelectorAll("circle");
-//     return Array.prototype.slice.call(list);
-//   }
+//       button.addEventListener("click", function preventPageJump(event) {
+//         event.preventDefault();
+//         button.blur();
+//       });
 
-//   function centreOf(el) {
-//     const box = mapEl.getBoundingClientRect();
-//     const r = el.getBoundingClientRect();
-//     return {
-//       x: r.left + r.width / 2 - box.left,
-//       y: r.top + r.height / 2 - box.top,
-//       w: box.width,
-//       h: box.height,
-//     };
-//   }
-
-//   function highlightMarker(index, on) {
-//     const m = markers[index];
-//     if (!m) return;
-//     m.setAttribute("r", on ? 9.5 : 8);
-//     m.style.fill = on ? ACCENT : BLUE;
-//   }
-
-//   /* built once and only repositioned, so the pulse never restarts */
-//   function buildOverlay() {
-//     layer.innerHTML = "";
-//     pulses = [];
-
-//     markers.forEach((m, i) => {
-//       const loc = LOCATIONS[i];
-
-//       const wrap = document.createElement("span");
-//       wrap.className = "cev-pulse";
-//       if (!reduceMotion) wrap.innerHTML = "<i></i><i></i>";
-
-//       const hit = document.createElement("button");
-//       hit.type = "button";
-//       hit.className = "cev-hit";
-//       hit.setAttribute(
-//         "aria-label",
-//         loc ? loc.city + ", " + loc.country + " office" : "Office location",
-//       );
-
-//       const open = () => {
-//         markers.forEach((_, j) => highlightMarker(j, false));
-//         openTip(i);
-//         highlightMarker(i, true);
-//       };
-//       const close = () => {
-//         closeTip();
-//         highlightMarker(i, false);
-//       };
-
-//       if (hasHover) {
-//         hit.addEventListener("mouseenter", open);
-//         hit.addEventListener("mouseleave", close);
-//         hit.addEventListener("click", (e) => e.stopPropagation());
-//       } else {
-//         /* touch: one tap toggles. mouseenter is deliberately NOT bound —
-//            the browser synthesises it before click, which was opening and
-//            then instantly closing the card on the first tap. */
-//         hit.addEventListener("click", (e) => {
-//           e.stopPropagation();
-//           if (openIndex === i) close();
-//           else open();
-//         });
-//       }
-
-//       hit.addEventListener("focus", open);
-//       hit.addEventListener("blur", close);
-
-//       wrap.appendChild(hit);
-//       layer.appendChild(wrap);
-//       pulses.push(wrap);
+//       button.addEventListener("keydown", function supportKeyboardZoom(event) {
+//         if (event.key === "Enter" || event.key === " ") {
+//           event.preventDefault();
+//           button.click();
+//         }
+//       });
 //     });
+
+//   /* --------------------------------------------------------------
+//      COUNTRY POLYGON LAYER
+//      -------------------------------------------------------------- */
+
+//   const worldLayer = L.geoJSON(am5geodata_worldLow, {
+//     style(feature) {
+//       const isOfficeCountry = OFFICE_REGIONS.includes(feature.id);
+//       const isCoverageCountry = COVERAGE_REGIONS.includes(feature.id);
+
+//       return {
+//         fillColor: isOfficeCountry
+//           ? "#72aaf0"
+//           : isCoverageCountry
+//             ? "#91b9e9"
+//             : "#e8eef7",
+//         fillOpacity: 1,
+//         color: "#ffffff",
+//         opacity: 1,
+//         weight: 1,
+//       };
+//     },
+
+//     onEachFeature(feature, layer) {
+//       layer.on({
+//         mouseover(event) {
+//           const isOfficeCountry = OFFICE_REGIONS.includes(
+//             feature.id
+//           );
+//           const isCoverageCountry = COVERAGE_REGIONS.includes(
+//             feature.id
+//           );
+
+//           event.target.setStyle({
+//             fillColor: isOfficeCountry
+//               ? "#4f94e8"
+//               : isCoverageCountry
+//                 ? "#6fa6df"
+//                 : "#d8e5f6",
+//           });
+//         },
+
+//         mouseout(event) {
+//           worldLayer.resetStyle(event.target);
+//         },
+//       });
+//     },
+//   }).addTo(map);
+
+//   /* --------------------------------------------------------------
+//      CUSTOM PULSING MARKER
+//      -------------------------------------------------------------- */
+
+//   /* Ripple and solid dot are two separate Leaflet markers. This guarantees
+//      that the ripple can never open the office details. */
+//   const officePulseIcon = L.divIcon({
+//     className: "office-pulse-wrapper",
+//     html: '<div class="office-pulse-ring"></div>',
+//     iconSize: [26, 26],
+//     iconAnchor: [13, 13],
+//   });
+
+//   const officeDotIcon = L.divIcon({
+//     className: "office-dot-wrapper",
+//     html: '<div class="office-pin-dot"></div>',
+//     iconSize: [14, 14],
+//     iconAnchor: [7, 7],
+//   });
+
+//   /* --------------------------------------------------------------
+//      TOOLTIP HTML
+//      -------------------------------------------------------------- */
+
+//   function createTooltipHtml(location) {
+//     const contactPerson = location.contactName
+//       ? `
+//         <div class="cev-am-tip-person">
+//           <i
+//             class="bi bi-person-fill"
+//             aria-hidden="true"
+//           ></i>
+
+//           <strong>Contact:</strong>
+
+//           <span>
+//             ${escapeHtml(location.contactName)}
+//           </span>
+//         </div>
+//       `
+//       : "";
+
+//     const phone = location.tel
+//       ? `
+//         <div>
+//           <strong>Phone:</strong>
+
+//           <span>
+//             ${escapeHtml(location.tel)}
+//           </span>
+//         </div>
+//       `
+//       : "";
+
+//     const subtitle = location.tag
+//       ? `${escapeHtml(location.city)} · ${escapeHtml(location.tag)}`
+//       : escapeHtml(location.city);
+
+//     return `
+//       <div class="cev-am-tip">
+//         <div class="cev-am-tip-country">
+//           ${escapeHtml(location.country)}
+//         </div>
+
+//         <div class="cev-am-tip-city">
+//           ${subtitle}
+//         </div>
+
+//         <div class="cev-am-tip-address">
+//           ${location.address.map(escapeHtml).join("<br>")}
+//         </div>
+
+//         <div class="cev-am-tip-contact">
+//           ${contactPerson}
+
+//           ${phone}
+
+//           <div>
+//             <strong>Email:</strong>
+
+//             <span>
+//               ${escapeHtml(location.email)}
+//             </span>
+//           </div>
+//         </div>
+//       </div>
+//     `;
 //   }
 
-//   function positionPulses() {
-//     pulses.forEach((p, i) => {
-//       const m = markers[i];
-//       if (!m) return;
-//       const c = centreOf(m);
-//       p.style.left = c.x + "px";
-//       p.style.top = c.y + "px";
-//     });
-//   }
+//   /* --------------------------------------------------------------
+//      CREATE OFFICE MARKERS
+//      -------------------------------------------------------------- */
 
-//   function tipHtml(loc) {
-//     return (
-//       '<span class="mt-country">' +
-//       loc.country +
-//       "</span>" +
-//       '<span class="mt-city">' +
-//       loc.city +
-//       (loc.tag ? " &middot; " + loc.tag : "") +
-//       "</span>" +
-//       '<span class="mt-address">' +
-//       loc.address.join("<br />") +
-//       "</span>" +
-//       '<span class="mt-line"><strong>Tel</strong> ' +
-//     (loc.tel ? '<span class="mt-line"><strong>Tel</strong> ' + loc.tel + "</span>" : "") +
-//       "</span>" +
-//       '<span class="mt-line"><strong>Email</strong> ' +
-//       loc.email +
-//       "</span>"
-//     );
-//   }
+//   function getTooltipPosition(marker) {
+//     const point = map.latLngToContainerPoint(marker.getLatLng());
+//     const mapSize = map.getSize();
+//     const mapRect = mapElement.getBoundingClientRect();
+//     const header = document.querySelector("header");
 
-//   /* places the card wherever there is room and never lets it hang
-//      outside the map — this is what was breaking on small screens */
-//   function positionTip() {
-//     const m = markers[openIndex];
-//     if (!m) return;
+//     const headerBottom = header
+//       ? header.getBoundingClientRect().bottom
+//       : 0;
 
-//     const c = centreOf(m);
-//     const t = tip.getBoundingClientRect();
-//     const pad = 12;
+//     const safeTop =
+//       Math.max(0, headerBottom - mapRect.top) + 15;
+
+//     const cardWidth = isMobile ? 240 : 285;
+//     const cardHeight = isMobile ? 270 : 245;
 //     const gap = 18;
 
-//     let top = c.y - t.height - gap; /* above the marker if it fits */
-//     if (top < pad) top = c.y + gap; /* otherwise below */
-//     if (top + t.height > c.h - pad) top = Math.max(pad, c.h - t.height - pad);
+//     const topSpace = point.y - safeTop;
+//     const bottomSpace = mapSize.y - point.y;
+//     const leftSpace = point.x;
+//     const rightSpace = mapSize.x - point.x;
 
-//     let left = c.x - t.width / 2; /* centred, then clamped */
-//     left = Math.min(Math.max(pad, left), Math.max(pad, c.w - t.width - pad));
+//     const horizontallyFits =
+//       point.x - cardWidth / 2 > 12 &&
+//       point.x + cardWidth / 2 < mapSize.x - 12;
 
-//     tip.style.left = left + "px";
-//     tip.style.top = top + "px";
-//   }
-
-//   function openTip(index) {
-//     const loc = LOCATIONS[index];
-//     if (!loc || !markers[index]) return;
-//     openIndex = index;
-//     tip.innerHTML = tipHtml(loc);
-//     tip.classList.add("is-open");
-//     positionTip();
-//   }
-
-//   function closeTip() {
-//     openIndex = -1;
-//     tip.classList.remove("is-open");
-//   }
-
-//   /* keeps the overlays glued to the markers during zoom / pan / resize */
-//   let syncUntil = 0;
-//   let ticking = false;
-
-//   function sync(ms) {
-//     syncUntil = Math.max(syncUntil, performance.now() + (ms || 700));
-//     if (ticking) return;
-//     ticking = true;
-
-//     (function step() {
-//       positionPulses();
-//       if (openIndex > -1) positionTip();
-//       if (performance.now() < syncUntil) requestAnimationFrame(step);
-//       else ticking = false;
-//     })();
-//   }
-
-//   function wire() {
-//     markers = findMarkers();
-//     if (!markers.length) return false;
-//     buildOverlay();
-//     positionPulses();
-//     return true;
-//   }
-
-//   /* jsVectorMap defers its own render to DOMContentLoaded, so the markers
-//      are NOT in the DOM when this file runs. Poll until they appear. */
-//   let tries = 0;
-//   (function init() {
-//     if (wire()) return;
-//     if (tries++ > 40) {
-//       console.warn("[cevolve] map markers never appeared — overlay skipped.");
-//       return;
+//     if (topSpace >= cardHeight + gap && horizontallyFits) {
+//       return "top";
 //     }
-//     setTimeout(init, 100);
-//   })();
 
-//   /* anything that can move the map re-syncs the overlays */
-//   mapEl.addEventListener("pointerdown", () => sync(1400));
-//   mapEl.addEventListener("pointerup", () => sync(900));
-//   mapEl.addEventListener("click", (e) => {
-//     if (e.target.closest && e.target.closest(".jvm-zoom-btn")) sync(1400);
+//     if (bottomSpace >= cardHeight + gap && horizontallyFits) {
+//       return "bottom";
+//     }
+
+//     if (leftSpace >= cardWidth + gap) {
+//       return "left";
+//     }
+
+//     if (rightSpace >= cardWidth + gap) {
+//       return "right";
+//     }
+
+//     return topSpace > bottomSpace ? "top" : "bottom";
+//   }
+
+//   function getTooltipOffset(direction) {
+//     if (direction === "bottom") return L.point(0, 12);
+//     if (direction === "left") return L.point(-12, 0);
+//     if (direction === "right") return L.point(12, 0);
+
+//     return L.point(0, -12);
+//   }
+
+//   let activeOfficeMarker = null;
+//   let activeSubLocationMarker = null;
+
+//   LOCATIONS.forEach(function addOfficeMarker(location) {
+//     /* Decorative ripple layer: never interactive, focusable or clickable. */
+//     L.marker(location.coords, {
+//       icon: officePulseIcon,
+//       interactive: false,
+//       keyboard: false,
+//       bubblingMouseEvents: false,
+//       zIndexOffset: -10,
+//     }).addTo(map);
+
+//     /*
+//      * Native marker title is intentionally not added.
+//      * It prevents a second browser tooltip from appearing.
+//      */
+//     const marker = L.marker(location.coords, {
+//       icon: officeDotIcon,
+//       keyboard: true,
+//       interactive: true,
+//       bubblingMouseEvents: false,
+//       zIndexOffset: 10,
+//     }).addTo(map);
+
+//     marker.bindTooltip(createTooltipHtml(location), {
+//       direction: "top",
+//       offset: [0, -12],
+//       className: "cev-office-tooltip",
+//       opacity: 1,
+//       interactive: false,
+//     });
+
+//     marker.on("tooltipopen", function () {
+//       const tooltip = marker.getTooltip();
+//       const direction = getTooltipPosition(marker);
+
+//       tooltip.options.direction = direction;
+//       tooltip.options.offset = getTooltipOffset(direction);
+//       tooltip.update();
+//     });
+
+//     /* Always support tap/click. Some mobile browsers incorrectly report
+//        hover capability, so click handling must not live in an `else`. */
+//     marker.on("click", function openMobileTooltip(event) {
+//       if (event.originalEvent) {
+//         L.DomEvent.stopPropagation(event.originalEvent);
+//       }
+
+//       if (activeOfficeMarker && activeOfficeMarker !== marker) {
+//         activeOfficeMarker.closeTooltip();
+//       }
+
+//       if (activeSubLocationMarker) {
+//         activeSubLocationMarker.closeTooltip();
+//         activeSubLocationMarker = null;
+//       }
+
+//       activeOfficeMarker = marker;
+//       marker.openTooltip();
+
+//       /* Force positioning and repaint immediately in Chrome mobile
+//          emulation and on touch devices. */
+//       window.requestAnimationFrame(function refreshMobileTooltip() {
+//         const tooltip = marker.getTooltip();
+//         const direction = getTooltipPosition(marker);
+
+//         tooltip.options.direction = direction;
+//         tooltip.options.offset = getTooltipOffset(direction);
+//         tooltip.update();
+//       });
+//     });
+
+//     if (supportsHover) {
+//       marker.on("mouseover", function showTooltip() {
+//         marker.openTooltip();
+//       });
+
+//       marker.on("mouseout", function hideTooltip() {
+//         marker.closeTooltip();
+//       });
+
+//       marker.on("focus", function showKeyboardTooltip() {
+//         marker.openTooltip();
+//       });
+
+//       marker.on("blur", function hideKeyboardTooltip() {
+//         marker.closeTooltip();
+//       });
+//     }
 //   });
-//   window.addEventListener("load", () => sync(600));
-//   window.addEventListener("resize", () => sync(600));
 
-//   /* tap / click anywhere off a marker closes the card */
-//   document.addEventListener("click", () => {
-//     if (openIndex > -1) closeTip();
-//   });
-// })();
+//   /* Small Indian location markers: name only, no address popup. */
+//   INDIA_SUB_LOCATIONS.forEach(function addIndiaSubLocation(location) {
+//     const subMarker = L.circleMarker(location.coords, {
+//       radius: 4,
+//       fillColor: "#0361eb",
+//       fillOpacity: 1,
+//       color: "#ffffff",
+//       weight: 1.5,
+//       opacity: 1,
+//       interactive: true,
+//     }).addTo(map);
 
-// /* ---------------------------------------------------------------------
-//    3 · OFFICE CARDS
-//    --------------------------------------------------------------------- */
-// (function () {
-//   const listEl = document.getElementById("officeList");
-//   if (!listEl) return;
+//     subMarker.bindTooltip(escapeHtml(location.name), {
+//       direction: "top",
+//       offset: [0, -7],
+//       className: "cev-location-name-tooltip",
+//       opacity: 1,
+//       interactive: false,
+//     });
 
-//   LOCATIONS.forEach((loc) => {
-//     const card = document.createElement("article");
-//     card.className = "office-card";
-//     card.innerHTML =
-//       '<div class="office-card-head">' +
-//       '<h3 class="office-country">' +
-//       loc.country +
-//       "</h3>" +
-//       (loc.tag ? '<span class="office-tag">' + loc.tag + "</span>" : "") +
-//       "</div>" +
-//       '<p class="office-city">' +
-//       loc.city +
-//       "</p>" +
-//       '<address class="office-address">' +
-//       loc.address.join("<br />") +
-//       "</address>" +
-//       '<p class="office-contact">' +
-//       '<span><i class="bi bi-telephone"></i> ' +
-//       loc.tel +
-//       "</span>" +
-//       '<span><i class="bi bi-envelope"></i> <a href="mailto:' +
-//       loc.email +
-//       '">' +
-//       loc.email +
-//       "</a></span>" +
-//       "</p>" +
-//       '<a class="btn-map" href="' +
-//       gmapsUrl(loc) +
-//       '" target="_blank" rel="noopener">' +
-//       '<i class="bi bi-geo-alt-fill"></i> View on map</a>';
+//     subMarker.on("click", function showSubLocationName(event) {
+//       if (event.originalEvent) {
+//         L.DomEvent.stopPropagation(event.originalEvent);
+//       }
 
-//     listEl.appendChild(card);
-//   });
-// })();
+//       if (
+//         activeSubLocationMarker &&
+//         activeSubLocationMarker !== subMarker
+//       ) {
+//         activeSubLocationMarker.closeTooltip();
+//       }
 
-// /* ---------------------------------------------------------------------
-//    4a · HAMBURGER (same behaviour as script.js)
-//    --------------------------------------------------------------------- */
-// (function () {
-//   const hamburger = document.getElementById("hamburger");
-//   const mobileNav = document.getElementById("mobileNav");
-//   if (!hamburger || !mobileNav) return;
+//       if (activeOfficeMarker) {
+//         activeOfficeMarker.closeTooltip();
+//         activeOfficeMarker = null;
+//       }
 
-//   hamburger.addEventListener("click", () => {
-//     hamburger.classList.toggle("open");
-//     mobileNav.classList.toggle("open");
-//   });
-//   mobileNav.querySelectorAll("a").forEach((a) => {
-//     a.addEventListener("click", () => {
-//       hamburger.classList.remove("open");
-//       mobileNav.classList.remove("open");
+//       activeSubLocationMarker = subMarker;
+//       subMarker.openTooltip();
+
+//       window.requestAnimationFrame(function refreshSubLocationTooltip() {
+//         subMarker.getTooltip().update();
+//       });
 //     });
 //   });
+
+//   map.on("click", function closeActiveOfficeTooltip() {
+//     if (activeOfficeMarker) {
+//       activeOfficeMarker.closeTooltip();
+//       activeOfficeMarker = null;
+//     }
+
+//     if (activeSubLocationMarker) {
+//       activeSubLocationMarker.closeTooltip();
+//       activeSubLocationMarker = null;
+//     }
+//   });
+
+//   /* --------------------------------------------------------------
+//      FIT INDIA, UAE AND AUSTRALIA IN THE INITIAL VIEW
+//      -------------------------------------------------------------- */
+
+//   const initialViewCoordinates = LOCATIONS.map(
+//     function getOfficeCoordinates(location) {
+//       return location.coords;
+//     }
+//   ).concat([
+//     [26, 30], // Western Middle East coverage anchor
+//     [-41.2865, 174.7762], // New Zealand coverage anchor
+//   ]);
+
+//   const officeBounds = L.latLngBounds(initialViewCoordinates);
+
+//   function fitAllOfficeLocations() {
+//     map.invalidateSize(false);
+
+//     map.fitBounds(officeBounds, {
+//       paddingTopLeft: isMobile
+//         ? [42, 44]
+//         : [180, 65],
+
+//       paddingBottomRight: isMobile
+//         ? [42, 44]
+//         : [180, 65],
+
+//       maxZoom: isMobile ? 1.75 : 2.25,
+//       animate: false,
+//     });
+//   }
+
+//   map.whenReady(function handleMapReady() {
+//     window.requestAnimationFrame(fitAllOfficeLocations);
+//   });
+
+//   let resizeTimer = null;
+
+//   window.addEventListener("resize", function handleMapResize() {
+//     window.clearTimeout(resizeTimer);
+
+//     resizeTimer = window.setTimeout(function resizeMap() {
+//       map.invalidateSize(false);
+//     }, 150);
+//   });
 // })();
 
-// /* ---------------------------------------------------------------------
-//    4b · FORM SUBMIT via EmailJS (identical to script.js)
-//    --------------------------------------------------------------------- */
-// const EMAILJS_SERVICE_ID = "service_q3c9d6n";
-// const EMAILJS_TEMPLATE_ID = "template_ta01r3o"; // company email
-// const EMAILJS_AUTOREPLY_TEMPLATE = "template_6nfr2le"; // auto reply
+// /* ================================================================
+//    OFFICE CARDS
+//    ================================================================ */
 
-// async function handleSubmit(e) {
-//   e.preventDefault();
+// (function renderOfficeCards() {
+//   const officeList = document.getElementById("officeList");
 
-//   const btn = document.getElementById("submitBtn");
-//   const msg = document.getElementById("formMsg");
+//   if (!officeList) {
+//     return;
+//   }
 
-//   btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
-//   btn.disabled = true;
-//   msg.style.display = "none";
+//   officeList.innerHTML = "";
 
-//   const form = e.target;
+//   LOCATIONS.forEach(function createOfficeCard(location) {
+//     const card = document.createElement("article");
 
-//   const params = {
-//     from_name: form.from_name.value,
-//     reply_to: form.reply_to.value,
-//     user_name: form.from_name.value, // required for auto-reply
-//     company: form.company.value,
-//     phone: form.phone.value,
+//     card.className = "office-card";
+
+//     const officeTag = location.tag
+//       ? `
+//         <span class="office-tag">
+//           ${escapeHtml(location.tag)}
+//         </span>
+//       `
+//       : "";
+
+//     const contactPerson = location.contactName
+//       ? `
+//         <span class="office-person">
+//           <i class="bi bi-person-fill"></i>
+//           ${escapeHtml(location.contactName)}
+//         </span>
+//       `
+//       : "";
+
+//     const phone = location.tel
+//       ? `
+//         <span>
+//           <i class="bi bi-telephone"></i>
+//           <a href="tel:${escapeHtml(location.tel.replace(/[^\d+]/g, ""))}">
+//             ${escapeHtml(location.tel)}
+//           </a>
+//         </span>
+//       `
+//       : "";
+
+//     card.innerHTML = `
+//       <div class="office-card-head">
+//         <h3 class="office-country">
+//           ${escapeHtml(location.country)}
+//         </h3>
+
+//         ${officeTag}
+//       </div>
+
+//       <div class="office-content">
+//         <p class="office-city">
+//           ${escapeHtml(location.city)}
+//         </p>
+
+//         <address class="office-address">
+//           ${location.address.map(escapeHtml).join("<br>")}
+//         </address>
+
+//         <p class="office-contact">
+//           ${contactPerson}
+
+//           ${phone}
+
+//           <span>
+//             <i class="bi bi-envelope"></i>
+
+//             <a href="mailto:${escapeHtml(location.email)}">
+//               ${escapeHtml(location.email)}
+//             </a>
+//           </span>
+//         </p>
+//       </div>
+
+//       <div class="office-footer">
+//         <a
+//           class="btn-map"
+//           href="${gmapsUrl(location)}"
+//           target="_blank"
+//           rel="noopener"
+//         >
+//           <i class="bi bi-geo-alt-fill"></i>
+//           View on Map
+//         </a>
+//       </div>
+//     `;
+
+//     officeList.appendChild(card);
+//   });
+// })();
+
+// /* ================================================================
+//    MOBILE NAVIGATION
+//    ================================================================ */
+
+// (function initializeMobileNavigation() {
+//   const hamburger = document.getElementById("hamburger");
+//   const mobileNavigation = document.getElementById("mobileNav");
+
+//   if (!hamburger || !mobileNavigation) {
+//     return;
+//   }
+
+//   hamburger.addEventListener("click", function toggleMenu() {
+//     hamburger.classList.toggle("open");
+//     mobileNavigation.classList.toggle("open");
+//   });
+
+//   mobileNavigation
+//     .querySelectorAll("a")
+//     .forEach(function attachNavigationHandler(link) {
+//       link.addEventListener("click", function closeMenu() {
+//         hamburger.classList.remove("open");
+//         mobileNavigation.classList.remove("open");
+//       });
+//     });
+// })();
+
+// /* ================================================================
+//    INTERNATIONAL PHONE FIELD
+//    ================================================================ */
+
+// let itiPhone = null;
+
+// (function initializePhoneInput() {
+//   const phoneInput = document.getElementById("phone");
+
+//   if (
+//     !phoneInput ||
+//     typeof window.intlTelInput === "undefined"
+//   ) {
+//     if (phoneInput) {
+//       console.warn(
+//         "[Cevolve] intl-tel-input could not be loaded."
+//       );
+//     }
+
+//     return;
+//   }
+
+//   itiPhone = window.intlTelInput(phoneInput, {
+//     initialCountry: "in",
+//     countryOrder: ["in", "ae", "au"],
+//     separateDialCode: true,
+//     strictMode: true,
+//     placeholderNumberPolicy: "OFF",
+//   });
+// })();
+
+// /* ================================================================
+//    CONTACT FORM
+//    ================================================================ */
+
+// const CONTACT_API =
+//   "https://cevolve-contact-api.onrender.com/api/contact";
+
+// async function handleSubmit(event) {
+//   event.preventDefault();
+
+//   const form = event.target;
+//   const submitButton = document.getElementById("submitBtn");
+//   const messageElement = document.getElementById("formMsg");
+
+//   if (!form.checkValidity()) {
+//     form.reportValidity();
+//     return;
+//   }
+
+//   submitButton.innerHTML =
+//     '<i class="bi bi-hourglass-split"></i> Sending...';
+
+//   submitButton.disabled = true;
+//   messageElement.style.display = "none";
+
+//   const typedPhone = form.phone.value.trim();
+
+//   const selectedCountry = itiPhone
+//     ? itiPhone.getSelectedCountry()
+//     : null;
+
+//   const completePhone =
+//     itiPhone && typedPhone
+//       ? itiPhone.getNumber()
+//       : typedPhone;
+
+//   if (
+//     itiPhone &&
+//     typedPhone &&
+//     !itiPhone.isValidNumber()
+//   ) {
+//     showFormMessage(
+//       messageElement,
+//       false,
+//       "That phone number doesn't look valid for the selected country."
+//     );
+
+//     resetSubmitButton(submitButton);
+
+//     return;
+//   }
+
+//   const payload = {
+//     name: form.from_name.value.trim(),
+//     email: form.reply_to.value.trim(),
+//     phone: completePhone,
+//     company: form.company.value.trim(),
 //     service: form.service.value,
-//     message: form.message.value,
+//     message: form.message.value.trim(),
+
+//     country: selectedCountry
+//       ? selectedCountry.name
+//       : "",
+
+//     country_code: selectedCountry
+//       ? `+${selectedCountry.dialCode}`
+//       : "",
+
+//     country_iso: selectedCountry
+//       ? selectedCountry.iso2.toUpperCase()
+//       : "",
 //   };
 
 //   try {
-//     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
-//     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_AUTOREPLY_TEMPLATE, params);
+//     const response = await fetch(CONTACT_API, {
+//       method: "POST",
 
-//     msg.style.display = "block";
-//     msg.style.background = "rgba(34,197,94,0.12)";
-//     msg.style.color = "#15803d";
-//     msg.style.border = "1px solid rgba(34,197,94,0.35)";
-//     msg.innerHTML =
-//       '<i class="bi bi-check2-circle"></i> Message sent successfully. Please check your email.';
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
 
-//     btn.innerHTML = '<i class="bi bi-check2-circle"></i> Sent!';
+//       body: JSON.stringify(payload),
+//     });
+
+//     let responseData = null;
+
+//     try {
+//       responseData = await response.json();
+//     } catch (error) {
+//       responseData = null;
+//     }
+
+//     if (!response.ok) {
+//       throw new Error(
+//         (responseData &&
+//           (responseData.message || responseData.error)) ||
+//         `Request failed (${response.status})`
+//       );
+//     }
+
+//     showFormMessage(
+//       messageElement,
+//       true,
+//       (responseData && responseData.message) ||
+//       "Thank you for contacting Cevolve Technologies. We have received your enquiry successfully."
+//     );
+
+//     submitButton.innerHTML =
+//       '<i class="bi bi-check2-circle"></i> Sent!';
+
 //     form.reset();
 
-//     setTimeout(() => {
-//       btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
-//       btn.disabled = false;
-//       msg.style.display = "none";
+//     if (itiPhone) {
+//       itiPhone.setSelectedCountry("in");
+//     }
+
+//     window.setTimeout(function resetSuccessMessage() {
+//       resetSubmitButton(submitButton);
+//       messageElement.style.display = "none";
 //     }, 5000);
-//   } catch (err) {
-//     console.error("EmailJS Error:", err);
+//   } catch (error) {
+//     console.error(
+//       "[Cevolve] Contact API error:",
+//       error
+//     );
 
-//     msg.style.display = "block";
-//     msg.style.background = "rgba(239,68,68,0.10)";
-//     msg.style.color = "#b91c1c";
-//     msg.style.border = "1px solid rgba(239,68,68,0.35)";
-//     msg.innerHTML =
-//       '<i class="bi bi-exclamation-triangle"></i> Message not sent. Please try again.';
+//     showFormMessage(
+//       messageElement,
+//       false,
+//       error.message ||
+//       "Message not sent. Please try again."
+//     );
 
-//     btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
-//     btn.disabled = false;
+//     resetSubmitButton(submitButton);
 //   }
 // }
 
+// /* ================================================================
+//    FORM HELPERS
+//    ================================================================ */
+
+// function resetSubmitButton(button) {
+//   button.innerHTML =
+//     '<i class="bi bi-send"></i> Send Message';
+
+//   button.disabled = false;
+// }
+
+// function showFormMessage(element, isSuccessful, text) {
+//   element.style.display = "block";
+
+//   element.style.background = isSuccessful
+//     ? "rgba(34,197,94,0.12)"
+//     : "rgba(239,68,68,0.10)";
+
+//   element.style.color = isSuccessful
+//     ? "#15803d"
+//     : "#b91c1c";
+
+//   element.style.border = isSuccessful
+//     ? "1px solid rgba(34,197,94,0.35)"
+//     : "1px solid rgba(239,68,68,0.35)";
+
+//   element.innerHTML = `
+//     <i class="bi bi-${isSuccessful
+//       ? "check2-circle"
+//       : "exclamation-triangle"
+//     }"></i>
+//     ${escapeHtml(text)}
+//   `;
+// }
+
+
 // v2
 
-/* =====================================================================
-   CEVOLVE · CONTACT-US PAGE
-   1. LOCATIONS + OFFICE_REGIONS  → the only block you edit
-   2. World map: outline-only countries, office countries highlighted,
-      round blue pointers with an address card
-   3. Office cards (View on map → Google Maps)
-   4. Header + form (same EmailJS flow as index.html)
-   ===================================================================== */
-
-/* ---------------------------------------------------------------------
-   1 · OFFICE DATA
-   coords: [latitude, longitude]  (Google Maps: right-click a pin →
-   the first number is lat, the second is lng)
-   Leave `tel` as "" if you don't have a number yet — the line is skipped.
-   --------------------------------------------------------------------- */
 const LOCATIONS = [
   {
     country: "India",
     city: "Thane",
-    tag: "Tech & Delivery",
+    tag: "Global HQ & Delivery",
+    contactName: "Pankaj Cevolve",
     address: [
       "Casa Primia-G Wing",
       "Lakeshore Greens, Palava Phase-II",
       "Thane, Maharashtra 421204, India",
     ],
-    tel: "+91 98191 33331",
+    tel: "+91-96191 33331",
     email: "info@cevolvetechnologies.com",
     coords: [19.170027, 73.111413],
   },
   {
     country: "United Arab Emirates",
     city: "Dubai",
-    tag: "Global HQ & Delivery",
+    tag: "Tech & Delivery",
+    contactName: "Ambrish Cevolve",
     address: [
       "Building A3, 3rd Floor",
       "Business Park, Dubai South",
@@ -677,744 +947,939 @@ const LOCATIONS = [
     country: "Australia",
     city: "Cranbourne West",
     tag: "Regional Office",
-    address: ["2 Comte Cl", "Cranbourne West VIC 3977", "Victoria, Australia"],
+    contactName: "Satish Cevolve",
+    address: [
+      "2 Comte Cl",
+      "Cranbourne West VIC 3977",
+      "Victoria, Australia",
+    ],
     tel: "+61 481 540 530",
     email: "info@cevolvetechnologies.com",
     coords: [-38.1021034, 145.2577401],
   },
 ];
 
-/* Countries filled on the map — ISO 3166-1 alpha-2 codes.
-   AU is listed so Australia highlights even before its address exists. */
 const OFFICE_REGIONS = ["IN", "AE", "AU"];
 
-/* small helper — Google Maps link for a location */
-function gmapsUrl(loc) {
+/* Regional coverage: Middle East and New Zealand. */
+const COVERAGE_REGIONS = [
+  "SA", // Saudi Arabia
+  "QA", // Qatar
+  "KW", // Kuwait
+  "OM", // Oman
+  "BH", // Bahrain
+  "JO", // Jordan
+  "LB", // Lebanon
+  "IQ", // Iraq
+  "YE", // Yemen
+  "IR", // Iran
+  "IL", // Israel
+  "PS", // Palestine
+  "SY", // Syria
+  "TR", // Turkey
+  "EG", // Egypt
+  "NZ", // New Zealand
+];
+
+/* Small Indian presence markers. These show only the location name. */
+const INDIA_SUB_LOCATIONS = [
+  {
+    name: "Punjab",
+    coords: [31.1471, 75.3412],
+  },
+  {
+    name: "Delhi",
+    coords: [28.6139, 77.209],
+  },
+  {
+    name: "Lucknow, Uttar Pradesh",
+    coords: [26.8467, 80.9462],
+  },
+  {
+    name: "Bengaluru",
+    coords: [12.9716, 77.5946],
+  },
+];
+
+/* ================================================================
+   GOOGLE MAPS LINK
+   ================================================================ */
+
+function gmapsUrl(location) {
   return (
     "https://www.google.com/maps/search/?api=1&query=" +
-    loc.coords[0] +
+    location.coords[0] +
     "," +
-    loc.coords[1]
+    location.coords[1]
   );
 }
 
-/* ---------------------------------------------------------------------
-   2 · WORLD MAP
-   Every style this section needs is injected below, so the overlay
-   cannot be broken by rule ordering in styles.css.
-   --------------------------------------------------------------------- */
-(function () {
-  const mapEl = document.getElementById("worldMap");
-  if (!mapEl) return;
+/* ================================================================
+   ESCAPE HTML
+   ================================================================ */
 
-  if (typeof jsVectorMap === "undefined") {
-    mapEl.classList.add("is-unavailable");
-    console.warn("[cevolve] jsVectorMap did not load — check the CDN tags.");
+function escapeHtml(value) {
+  const element = document.createElement("div");
+
+  element.textContent =
+    value === null || value === undefined ? "" : String(value);
+
+  return element.innerHTML;
+}
+
+/* ================================================================
+   LEAFLET OFFICE MAP
+   ================================================================ */
+
+(function initializeOfficeMap() {
+  const mapElement = document.getElementById("worldMap");
+
+  if (!mapElement) {
     return;
   }
 
-  /* brand colours read straight from :root in styles.css */
-  const css = getComputedStyle(document.documentElement);
-  const v = (name, fallback) => css.getPropertyValue(name).trim() || fallback;
-  const BLUE = v("--blue", "#0361EB"); /* pointers + office fill */
-  const DARK = v("--dark", "#002A61"); /* country outlines */
-  const NAVY = v("--charcoal", "#011438");
-  const MUTED = v("--muted", "#6D6D6D");
-  const FONT = v("--font", "Helvetica, Arial, sans-serif");
+  if (
+    typeof L === "undefined" ||
+    typeof am5geodata_worldLow === "undefined"
+  ) {
+    mapElement.classList.add("is-unavailable");
 
-  const OFFICE_FILL_OPACITY = 0.28;
+    console.warn(
+      "[Cevolve] Leaflet or world geodata could not be loaded."
+    );
 
-  /* how strongly the office countries are tinted. Keep this low — a solid
-     #0361EB country would swallow the #0361EB pointer sitting on it. */
-  //   const OFFICE_FILL_OPACITY = 0.15;
-
-  const reduceMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-  /* hover and touch are separate questions — conflating them made the
-     marker taps fire twice on phones */
-  const hasHover = window.matchMedia(
-    "(hover: hover) and (pointer: fine)",
-  ).matches;
-  const isTouch = !hasHover || window.matchMedia("(max-width: 767px)").matches;
-  const HIT = isTouch ? 44 : 34;
-
-  /* ---- self-contained styles (appended last, so they always win) ---- */
-  (function injectStyles() {
-    if (document.getElementById("cev-map-styles")) return;
-    const s = document.createElement("style");
-    s.id = "cev-map-styles";
-    s.textContent =
-      ".jvm-tooltip{display:none!important}" +
-      ".cev-layer{position:absolute;inset:0;z-index:5;pointer-events:none}" +
-      ".cev-pulse{position:absolute;width:0;height:0}" +
-      ".cev-pulse i{position:absolute;left:0;top:0;width:18px;height:18px;" +
-      "margin:-9px 0 0 -9px;border:2px solid " +
-      BLUE +
-      ";border-radius:50%;pointer-events:none;" +
-      "animation:cevPulse 2.4s ease-out infinite}" +
-      ".cev-pulse i:nth-child(2){animation-delay:1.2s}" +
-      "@keyframes cevPulse{0%{transform:scale(1);opacity:.8;border-width:2px}" +
-      "100%{transform:scale(2.9);opacity:0;border-width:.5px}}" +
-      ".cev-hit{position:absolute;left:0;top:0;width:" +
-      HIT +
-      "px;height:" +
-      HIT +
-      "px;margin:" +
-      -HIT / 2 +
-      "px 0 0 " +
-      -HIT / 2 +
-      "px;padding:0;border:0;border-radius:50%;background:transparent;" +
-      "cursor:pointer;pointer-events:auto;touch-action:manipulation;" +
-      "-webkit-tap-highlight-color:transparent;-webkit-appearance:none;appearance:none}" +
-      ".cev-hit:focus-visible{outline:2px solid " +
-      BLUE +
-      ";outline-offset:2px}" +
-      ".cev-tip{position:absolute;left:0;top:0;z-index:40;display:none;" +
-      "width:max-content;max-width:min(320px,calc(100% - 24px));padding:16px 18px;" +
-      "background:#fff;border:1px solid #e8edf2;border-radius:12px;" +
-      "box-shadow:0 18px 44px rgba(1,20,56,.18);font-family:" +
-      FONT +
-      ";font-size:14px;line-height:1.65;color:" +
-      MUTED +
-      ";text-align:left;pointer-events:none}" +
-      ".cev-tip.is-open{display:block}" +
-      ".cev-tip .mt-country{display:block;font-size:16px;font-weight:800;color:" +
-      NAVY +
-      "}" +
-      ".cev-tip .mt-city{display:block;font-size:11.5px;font-weight:700;" +
-      "letter-spacing:1.2px;text-transform:uppercase;color:" +
-      BLUE +
-      ";margin-bottom:10px}" +
-      ".cev-tip .mt-address{display:block;margin-bottom:10px}" +
-      ".cev-tip .mt-line{display:block;font-size:13.5px;color:" +
-      NAVY +
-      "}" +
-      ".cev-tip .mt-line strong{color:" +
-      MUTED +
-      ";font-weight:600;margin-right:4px}" +
-      "@media (prefers-reduced-motion: reduce){.cev-pulse i{animation:none;opacity:0}}";
-    document.head.appendChild(s);
-  })();
-
-  const map = new jsVectorMap({
-    selector: "#worldMap",
-    map: "world",
-    backgroundColor: "transparent",
-
-    /* zoom via the buttons only — the wheel keeps scrolling the page.
-       `draggable` is the real option name (there is no `panOnDrag`), and it
-       is off on touch so the map never eats vertical page scroll. */
-    zoomOnScroll: false,
-    zoomButtons: true,
-    zoomMin: 1,
-    zoomMax: 8,
-    draggable: !isTouch,
-    regionsSelectable: false,
-
-    /* OUTLINE ONLY: every country is an unfilled shape with a navy border.
-       The office countries listed in OFFICE_REGIONS get the `selected`
-       style instead — that is the highlight. */
-    // regionStyle: {
-    //   initial: {
-    //     fill: "none",
-    //     stroke: DARK,
-    //     strokeWidth: 0.7,
-    //     fillOpacity: 1,
-    //   },
-    //   hover: { fill: "none", fillOpacity: 1 } /* countries never react */,
-    //   selected: {
-    //     fill: BLUE,
-    //     fillOpacity: OFFICE_FILL_OPACITY,
-    //     stroke: DARK,
-    //     strokeWidth: 0.7,
-    //   },
-    // },
-
-    regionStyle: {
-      initial: { fill: "#e8eef7", stroke: "none", fillOpacity: 1 },
-      hover: { fill: "#e8eef7", fillOpacity: 1 } /* countries never react */,
-      selected: {
-        fill: BLUE,
-        fillOpacity: OFFICE_FILL_OPACITY,
-        stroke: "none",
-      },
-    },
-    selectedRegions: OFFICE_REGIONS,
-
-    /* one pointer per entry in LOCATIONS — nothing else */
-    markers: LOCATIONS.map((l) => ({
-      name: l.city + ", " + l.country,
-      coords: l.coords,
-    })),
-
-    markerStyle: {
-      initial: {
-        r: 8,
-        fill: BLUE,
-        stroke: "#fff",
-        strokeWidth: 2.5,
-        fillOpacity: 1,
-      },
-    },
-
-    /* both built-in tooltips are suppressed: no country names, and the
-       marker card is drawn by us so it can flip away from the edges */
-    onRegionTooltipShow(event) {
-      event.preventDefault();
-    },
-    onMarkerTooltipShow(event) {
-      event.preventDefault();
-    },
-    onViewportChange() {
-      sync(900);
-    },
-  });
-
-  /* ---- overlays: pulse rings + tap targets (under) and the card (over) ---- */
-  const layer = document.createElement("div");
-  layer.className = "cev-layer";
-  mapEl.appendChild(layer);
-
-  const tip = document.createElement("div");
-  tip.className = "cev-tip";
-  mapEl.appendChild(tip);
-
-  let markers = [];
-  let pulses = [];
-  let openIndex = -1;
-
-  function findMarkers() {
-    const svg = mapEl.querySelector("svg");
-    if (!svg) return [];
-    /* markers are the only <circle>s here — regions are all <path> */
-    let list = svg.querySelectorAll(".jvm-marker");
-    if (!list.length) list = svg.querySelectorAll("circle");
-    return Array.prototype.slice.call(list);
+    return;
   }
 
-  function centreOf(el) {
-    const box = mapEl.getBoundingClientRect();
-    const r = el.getBoundingClientRect();
-    return {
-      x: r.left + r.width / 2 - box.left,
-      y: r.top + r.height / 2 - box.top,
-      w: box.width,
-      h: box.height,
+  const isMobile = window.matchMedia(
+    "(max-width: 767px)"
+  ).matches;
+
+  const isTouchDevice =
+    navigator.maxTouchPoints > 0 ||
+    window.matchMedia("(pointer: coarse)").matches;
+
+  const supportsHover =
+    !isTouchDevice &&
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  const map = L.map(mapElement, {
+    attributionControl: false,
+    zoomControl: false,
+    scrollWheelZoom: false,
+    doubleClickZoom: false,
+    dragging: true,
+    tap: true,
+    minZoom: 1,
+    maxZoom: 8,
+    zoomSnap: 0.25,
+    zoomDelta: 0.5,
+    worldCopyJump: false,
+    zoomAnimation: false,
+    fadeAnimation: false,
+    markerZoomAnimation: false,
+  });
+
+  /* Temporary position before fitBounds calculates final viewport. */
+  map.setView([10, 90], 2);
+
+  /* Genuine Leaflet control. CSS keeps this layer anchored inside the map. */
+  const zoomControl = L.control.zoom({
+    position: "topright",
+  }).addTo(map);
+
+  const zoomContainer = zoomControl.getContainer();
+  let lockedPageScroll = null;
+
+  function rememberPageScroll() {
+    lockedPageScroll = {
+      left: window.scrollX,
+      top: window.scrollY,
     };
   }
 
-  /* pointers stay #0361EB at all times — only the radius reacts */
-  function highlightMarker(index, on) {
-    const m = markers[index];
-    if (!m) return;
-    m.setAttribute("r", on ? 10 : 8);
-    m.style.fill = BLUE;
-  }
-
-  /* built once and only repositioned, so the pulse never restarts */
-  function buildOverlay() {
-    layer.innerHTML = "";
-    pulses = [];
-
-    markers.forEach((m, i) => {
-      const loc = LOCATIONS[i];
-
-      const wrap = document.createElement("span");
-      wrap.className = "cev-pulse";
-      if (!reduceMotion) wrap.innerHTML = "<i></i><i></i>";
-
-      const hit = document.createElement("button");
-      hit.type = "button";
-      hit.className = "cev-hit";
-      hit.setAttribute(
-        "aria-label",
-        loc ? loc.city + ", " + loc.country + " office" : "Office location",
-      );
-
-      const open = () => {
-        markers.forEach((_, j) => highlightMarker(j, false));
-        openTip(i);
-        highlightMarker(i, true);
-      };
-      const close = () => {
-        closeTip();
-        highlightMarker(i, false);
-      };
-
-      if (hasHover) {
-        hit.addEventListener("mouseenter", open);
-        hit.addEventListener("mouseleave", close);
-        hit.addEventListener("click", (e) => e.stopPropagation());
-      } else {
-        /* touch: one tap toggles. mouseenter is deliberately NOT bound —
-           the browser synthesises it before click, which was opening and
-           then instantly closing the card on the first tap. */
-        hit.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (openIndex === i) close();
-          else open();
-        });
-      }
-
-      hit.addEventListener("focus", open);
-      hit.addEventListener("blur", close);
-
-      wrap.appendChild(hit);
-      layer.appendChild(wrap);
-      pulses.push(wrap);
-    });
-  }
-
-  function positionPulses() {
-    pulses.forEach((p, i) => {
-      const m = markers[i];
-      if (!m) return;
-      const c = centreOf(m);
-      p.style.left = c.x + "px";
-      p.style.top = c.y + "px";
-    });
-  }
-
-  function tipHtml(loc) {
-    return (
-      '<span class="mt-country">' +
-      loc.country +
-      "</span>" +
-      '<span class="mt-city">' +
-      loc.city +
-      (loc.tag ? " &middot; " + loc.tag : "") +
-      "</span>" +
-      '<span class="mt-address">' +
-      loc.address.join("<br />") +
-      "</span>" +
-      (loc.tel
-        ? '<span class="mt-line"><strong>Tel</strong> ' + loc.tel + "</span>"
-        : "") +
-      '<span class="mt-line"><strong>Email</strong> ' +
-      loc.email +
-      "</span>"
-    );
-  }
-
-  /* places the card wherever there is room and never lets it hang
-     outside the map — this is what was breaking on small screens */
-  function positionTip() {
-    const m = markers[openIndex];
-    if (!m) return;
-
-    const c = centreOf(m);
-    const t = tip.getBoundingClientRect();
-    const pad = 12;
-    const gap = 18;
-
-    let top = c.y - t.height - gap; /* above the marker if it fits */
-    if (top < pad) top = c.y + gap; /* otherwise below */
-    if (top + t.height > c.h - pad) top = Math.max(pad, c.h - t.height - pad);
-
-    let left = c.x - t.width / 2; /* centred, then clamped */
-    left = Math.min(Math.max(pad, left), Math.max(pad, c.w - t.width - pad));
-
-    tip.style.left = left + "px";
-    tip.style.top = top + "px";
-  }
-
-  function openTip(index) {
-    const loc = LOCATIONS[index];
-    if (!loc || !markers[index]) return;
-    openIndex = index;
-    tip.innerHTML = tipHtml(loc);
-    tip.classList.add("is-open");
-    positionTip();
-  }
-
-  function closeTip() {
-    openIndex = -1;
-    tip.classList.remove("is-open");
-  }
-
-  /* keeps the overlays glued to the markers during zoom / pan / resize */
-  let syncUntil = 0;
-  let ticking = false;
-
-  function sync(ms) {
-    syncUntil = Math.max(syncUntil, performance.now() + (ms || 700));
-    if (ticking) return;
-    ticking = true;
-
-    (function step() {
-      positionPulses();
-      if (openIndex > -1) positionTip();
-      if (performance.now() < syncUntil) requestAnimationFrame(step);
-      else ticking = false;
-    })();
-  }
-
-  function wire() {
-    markers = findMarkers();
-    if (!markers.length) return false;
-    buildOverlay();
-    positionPulses();
-    return true;
-  }
-
-  /* jsVectorMap defers its own render to DOMContentLoaded, so the markers
-     are NOT in the DOM when this file runs. Poll until they appear. */
-  let tries = 0;
-  (function init() {
-    if (wire()) return;
-    if (tries++ > 40) {
-      console.warn("[cevolve] map markers never appeared — overlay skipped.");
+  function restorePageScroll() {
+    if (!lockedPageScroll) {
       return;
     }
-    setTimeout(init, 100);
-  })();
 
-  /* anything that can move the map re-syncs the overlays */
-  mapEl.addEventListener("pointerdown", () => sync(1400));
-  mapEl.addEventListener("pointerup", () => sync(900));
-  mapEl.addEventListener("click", (e) => {
-    if (e.target.closest && e.target.closest(".jvm-zoom-btn")) sync(1400);
+    const savedPosition = lockedPageScroll;
+    const rootElement = document.documentElement;
+    const previousInlineScrollBehavior = rootElement.style.scrollBehavior;
+
+    /* styles.css uses `scroll-behavior: smooth`. Temporarily switch it off
+       so restoring the same position cannot animate the whole page. */
+    rootElement.style.scrollBehavior = "auto";
+    window.scrollTo(savedPosition.left, savedPosition.top);
+
+    window.requestAnimationFrame(function finishScrollLock() {
+      window.scrollTo(savedPosition.left, savedPosition.top);
+
+      window.requestAnimationFrame(function releaseScrollLock() {
+        rootElement.style.scrollBehavior = previousInlineScrollBehavior;
+        lockedPageScroll = null;
+      });
+    });
+  }
+
+  /* Leaflet renders the zoom buttons as anchors with href="#". Removing
+     that href prevents desktop browsers from scrolling the document to
+     the top when + or - is clicked. The Leaflet zoom handlers continue
+     to work normally. */
+  /* Capture the position before Leaflet's own click handler runs. */
+  zoomContainer.addEventListener(
+    "click",
+    function lockPageBeforeZoom(event) {
+      if (!event.target.closest(".leaflet-control-zoom a")) {
+        return;
+      }
+
+      rememberPageScroll();
+      event.preventDefault();
+    },
+    true
+  );
+
+  zoomContainer
+    .querySelectorAll("a")
+    .forEach(function prepareZoomButton(button) {
+      button.removeAttribute("href");
+      button.setAttribute("role", "button");
+      button.setAttribute("tabindex", "0");
+
+      button.addEventListener("mousedown", function preventZoomFocus(event) {
+        rememberPageScroll();
+        event.preventDefault();
+      });
+
+      button.addEventListener("click", function preventPageJump(event) {
+        event.preventDefault();
+        button.blur();
+        restorePageScroll();
+      });
+
+      button.addEventListener("keydown", function supportKeyboardZoom(event) {
+        if (event.key === "Enter" || event.key === " ") {
+          rememberPageScroll();
+          event.preventDefault();
+          button.click();
+        }
+      });
+    });
+
+  /* --------------------------------------------------------------
+     COUNTRY POLYGON LAYER
+     -------------------------------------------------------------- */
+
+  const worldLayer = L.geoJSON(am5geodata_worldLow, {
+    style(feature) {
+      const isOfficeCountry = OFFICE_REGIONS.includes(feature.id);
+      const isCoverageCountry = COVERAGE_REGIONS.includes(feature.id);
+
+      return {
+        fillColor: isOfficeCountry
+          ? "#72aaf0"
+          : isCoverageCountry
+            ? "#91b9e9"
+            : "#e8eef7",
+        fillOpacity: 1,
+        color: "#ffffff",
+        opacity: 1,
+        weight: 1,
+      };
+    },
+
+    onEachFeature(feature, layer) {
+      layer.on({
+        mouseover(event) {
+          const isOfficeCountry = OFFICE_REGIONS.includes(
+            feature.id
+          );
+          const isCoverageCountry = COVERAGE_REGIONS.includes(
+            feature.id
+          );
+
+          event.target.setStyle({
+            fillColor: isOfficeCountry
+              ? "#4f94e8"
+              : isCoverageCountry
+                ? "#6fa6df"
+                : "#d8e5f6",
+          });
+        },
+
+        mouseout(event) {
+          worldLayer.resetStyle(event.target);
+        },
+      });
+    },
+  }).addTo(map);
+
+  /* --------------------------------------------------------------
+     CUSTOM PULSING MARKER
+     -------------------------------------------------------------- */
+
+  /* Ripple and solid dot are two separate Leaflet markers. This guarantees
+     that the ripple can never open the office details. */
+  const officePulseIcon = L.divIcon({
+    className: "office-pulse-wrapper",
+    html: '<div class="office-pulse-ring"></div>',
+    iconSize: [26, 26],
+    iconAnchor: [13, 13],
   });
-  window.addEventListener("load", () => sync(600));
-  window.addEventListener("resize", () => sync(600));
 
-  /* tap / click anywhere off a marker closes the card */
-  document.addEventListener("click", () => {
-    if (openIndex > -1) closeTip();
+  const officeDotIcon = L.divIcon({
+    className: "office-dot-wrapper",
+    html: '<div class="office-pin-dot"></div>',
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
   });
-})();
 
-/* ---------------------------------------------------------------------
-   3 · OFFICE CARDS
-   --------------------------------------------------------------------- */
-(function () {
-  const listEl = document.getElementById("officeList");
-  if (!listEl) return;
+  /* --------------------------------------------------------------
+     TOOLTIP HTML
+     -------------------------------------------------------------- */
 
-  LOCATIONS.forEach((loc) => {
-    const card = document.createElement("article");
-    card.className = "office-card";
-    // card.innerHTML =
-    //   '<div class="office-card-head">' +
-    //   '<h3 class="office-country">' +
-    //   loc.country +
-    //   "</h3>" +
-    //   (loc.tag ? '<span class="office-tag">' + loc.tag + "</span>" : "") +
-    //   "</div>" +
-    //   '<p class="office-city">' +
-    //   loc.city +
-    //   "</p>" +
-    //   '<address class="office-address">' +
-    //   loc.address.join("<br />") +
-    //   "</address>" +
-    //   '<p class="office-contact">' +
-    //   (loc.tel
-    //     ? '<span><i class="bi bi-telephone"></i> ' + loc.tel + "</span>"
-    //     : "") +
-    //   '<span><i class="bi bi-envelope"></i> <a href="mailto:' +
-    //   loc.email +
-    //   '">' +
-    //   loc.email +
-    //   "</a></span>" +
-    //   "</p>" +
-    //   '<a class="btn-map" href="' +
-    //   gmapsUrl(loc) +
-    //   '" target="_blank" rel="noopener">' +
-    //   '<i class="bi bi-geo-alt-fill"></i> View on map</a>';
-    card.innerHTML =
-      '<div class="office-card-head">' +
-      '<h3 class="office-country">' +
-      loc.country +
-      '</h3>' +
-      (loc.tag ? '<span class="office-tag">' + loc.tag + '</span>' : '') +
-      '</div>' +
+  function createTooltipHtml(location) {
+    const contactPerson = location.contactName
+      ? `
+        <div class="cev-am-tip-person">
+          <i
+            class="bi bi-person-fill"
+            aria-hidden="true"
+          ></i>
 
-      '<div class="office-content">' +
+          <strong>Contact:</strong>
 
-      '<p class="office-city">' +
-      loc.city +
-      '</p>' +
+          <span>
+            ${escapeHtml(location.contactName)}
+          </span>
+        </div>
+      `
+      : "";
 
-      '<address class="office-address">' +
-      loc.address.join("<br />") +
-      '</address>' +
+    const phone = location.tel
+      ? `
+        <div>
+          <strong>Phone:</strong>
 
-      '<p class="office-contact">' +
-      (loc.tel
-        ? '<span><i class="bi bi-telephone"></i> ' + loc.tel + '</span>'
-        : '') +
+          <span>
+            ${escapeHtml(location.tel)}
+          </span>
+        </div>
+      `
+      : "";
 
-      '<span><i class="bi bi-envelope"></i> <a href="mailto:' +
-      loc.email +
-      '">' +
-      loc.email +
-      '</a></span>' +
-      '</p>' +
+    const subtitle = location.tag
+      ? `${escapeHtml(location.city)} · ${escapeHtml(location.tag)}`
+      : escapeHtml(location.city);
 
-      '</div>' +
+    return `
+      <div class="cev-am-tip">
+        <div class="cev-am-tip-country">
+          ${escapeHtml(location.country)}
+        </div>
 
-      '<div class="office-footer">' +
-      '<a class="btn-map" href="' +
-      gmapsUrl(loc) +
-      '" target="_blank" rel="noopener">' +
-      '<i class="bi bi-geo-alt-fill"></i> View on Map' +
-      '</a>' +
-      '</div>';
+        <div class="cev-am-tip-city">
+          ${subtitle}
+        </div>
 
+        <div class="cev-am-tip-address">
+          ${location.address.map(escapeHtml).join("<br>")}
+        </div>
 
-    listEl.appendChild(card);
+        <div class="cev-am-tip-contact">
+          ${contactPerson}
+
+          ${phone}
+
+          <div>
+            <strong>Email:</strong>
+
+            <span>
+              ${escapeHtml(location.email)}
+            </span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  /* --------------------------------------------------------------
+     CREATE OFFICE MARKERS
+     -------------------------------------------------------------- */
+
+  function getTooltipPosition(marker) {
+    const point = map.latLngToContainerPoint(marker.getLatLng());
+    const mapSize = map.getSize();
+    const mapRect = mapElement.getBoundingClientRect();
+    const header = document.querySelector("header");
+
+    const headerBottom = header
+      ? header.getBoundingClientRect().bottom
+      : 0;
+
+    const safeTop =
+      Math.max(0, headerBottom - mapRect.top) + 15;
+
+    const cardWidth = isMobile ? 240 : 285;
+    const cardHeight = isMobile ? 270 : 245;
+    const gap = 18;
+
+    const topSpace = point.y - safeTop;
+    const bottomSpace = mapSize.y - point.y;
+    const leftSpace = point.x;
+    const rightSpace = mapSize.x - point.x;
+
+    const horizontallyFits =
+      point.x - cardWidth / 2 > 12 &&
+      point.x + cardWidth / 2 < mapSize.x - 12;
+
+    if (topSpace >= cardHeight + gap && horizontallyFits) {
+      return "top";
+    }
+
+    if (bottomSpace >= cardHeight + gap && horizontallyFits) {
+      return "bottom";
+    }
+
+    if (leftSpace >= cardWidth + gap) {
+      return "left";
+    }
+
+    if (rightSpace >= cardWidth + gap) {
+      return "right";
+    }
+
+    return topSpace > bottomSpace ? "top" : "bottom";
+  }
+
+  function getTooltipOffset(direction) {
+    if (direction === "bottom") return L.point(0, 12);
+    if (direction === "left") return L.point(-12, 0);
+    if (direction === "right") return L.point(12, 0);
+
+    return L.point(0, -12);
+  }
+
+  let activeOfficeMarker = null;
+  let activeSubLocationMarker = null;
+
+  LOCATIONS.forEach(function addOfficeMarker(location) {
+    /* Decorative ripple layer: never interactive, focusable or clickable. */
+    L.marker(location.coords, {
+      icon: officePulseIcon,
+      interactive: false,
+      keyboard: false,
+      bubblingMouseEvents: false,
+      zIndexOffset: -10,
+    }).addTo(map);
+
+    /*
+     * Native marker title is intentionally not added.
+     * It prevents a second browser tooltip from appearing.
+     */
+    const marker = L.marker(location.coords, {
+      icon: officeDotIcon,
+      keyboard: true,
+      interactive: true,
+      bubblingMouseEvents: false,
+      zIndexOffset: 10,
+    }).addTo(map);
+
+    marker.bindTooltip(createTooltipHtml(location), {
+      direction: "top",
+      offset: [0, -12],
+      className: "cev-office-tooltip",
+      opacity: 1,
+      interactive: false,
+    });
+
+    marker.on("tooltipopen", function () {
+      const tooltip = marker.getTooltip();
+      const direction = getTooltipPosition(marker);
+
+      tooltip.options.direction = direction;
+      tooltip.options.offset = getTooltipOffset(direction);
+      tooltip.update();
+    });
+
+    /* Always support tap/click. Some mobile browsers incorrectly report
+       hover capability, so click handling must not live in an `else`. */
+    marker.on("click", function openMobileTooltip(event) {
+      if (event.originalEvent) {
+        L.DomEvent.stopPropagation(event.originalEvent);
+      }
+
+      if (activeOfficeMarker && activeOfficeMarker !== marker) {
+        activeOfficeMarker.closeTooltip();
+      }
+
+      if (activeSubLocationMarker) {
+        activeSubLocationMarker.closeTooltip();
+        activeSubLocationMarker = null;
+      }
+
+      activeOfficeMarker = marker;
+      marker.openTooltip();
+
+      /* Force positioning and repaint immediately in Chrome mobile
+         emulation and on touch devices. */
+      window.requestAnimationFrame(function refreshMobileTooltip() {
+        const tooltip = marker.getTooltip();
+        const direction = getTooltipPosition(marker);
+
+        tooltip.options.direction = direction;
+        tooltip.options.offset = getTooltipOffset(direction);
+        tooltip.update();
+      });
+    });
+
+    if (supportsHover) {
+      marker.on("mouseover", function showTooltip() {
+        marker.openTooltip();
+      });
+
+      marker.on("mouseout", function hideTooltip() {
+        marker.closeTooltip();
+      });
+
+      marker.on("focus", function showKeyboardTooltip() {
+        marker.openTooltip();
+      });
+
+      marker.on("blur", function hideKeyboardTooltip() {
+        marker.closeTooltip();
+      });
+    }
   });
-})();
 
-/* ---------------------------------------------------------------------
-   4a · HAMBURGER (same behaviour as script.js)
-   --------------------------------------------------------------------- */
-(function () {
-  const hamburger = document.getElementById("hamburger");
-  const mobileNav = document.getElementById("mobileNav");
-  if (!hamburger || !mobileNav) return;
+  /* Small Indian location markers: name only, no address popup. */
+  INDIA_SUB_LOCATIONS.forEach(function addIndiaSubLocation(location) {
+    const subMarker = L.circleMarker(location.coords, {
+      radius: 4,
+      fillColor: "#0361eb",
+      fillOpacity: 1,
+      color: "#ffffff",
+      weight: 1.5,
+      opacity: 1,
+      interactive: true,
+    }).addTo(map);
 
-  hamburger.addEventListener("click", () => {
-    hamburger.classList.toggle("open");
-    mobileNav.classList.toggle("open");
-  });
-  mobileNav.querySelectorAll("a").forEach((a) => {
-    a.addEventListener("click", () => {
-      hamburger.classList.remove("open");
-      mobileNav.classList.remove("open");
+    subMarker.bindTooltip(escapeHtml(location.name), {
+      direction: "top",
+      offset: [0, -7],
+      className: "cev-location-name-tooltip",
+      opacity: 1,
+      interactive: false,
+    });
+
+    subMarker.on("click", function showSubLocationName(event) {
+      if (event.originalEvent) {
+        L.DomEvent.stopPropagation(event.originalEvent);
+      }
+
+      if (
+        activeSubLocationMarker &&
+        activeSubLocationMarker !== subMarker
+      ) {
+        activeSubLocationMarker.closeTooltip();
+      }
+
+      if (activeOfficeMarker) {
+        activeOfficeMarker.closeTooltip();
+        activeOfficeMarker = null;
+      }
+
+      activeSubLocationMarker = subMarker;
+      subMarker.openTooltip();
+
+      window.requestAnimationFrame(function refreshSubLocationTooltip() {
+        subMarker.getTooltip().update();
+      });
     });
   });
+
+  map.on("click", function closeActiveOfficeTooltip() {
+    if (activeOfficeMarker) {
+      activeOfficeMarker.closeTooltip();
+      activeOfficeMarker = null;
+    }
+
+    if (activeSubLocationMarker) {
+      activeSubLocationMarker.closeTooltip();
+      activeSubLocationMarker = null;
+    }
+  });
+
+  /* --------------------------------------------------------------
+     FIT INDIA, UAE AND AUSTRALIA IN THE INITIAL VIEW
+     -------------------------------------------------------------- */
+
+  const initialViewCoordinates = LOCATIONS.map(
+    function getOfficeCoordinates(location) {
+      return location.coords;
+    }
+  ).concat([
+    [26, 30], // Western Middle East coverage anchor
+    [-41.2865, 174.7762], // New Zealand coverage anchor
+  ]);
+
+  const officeBounds = L.latLngBounds(initialViewCoordinates);
+
+  function fitAllOfficeLocations() {
+    map.invalidateSize(false);
+
+    map.fitBounds(officeBounds, {
+      paddingTopLeft: isMobile
+        ? [42, 44]
+        : [180, 65],
+
+      paddingBottomRight: isMobile
+        ? [42, 44]
+        : [180, 65],
+
+      maxZoom: isMobile ? 1.75 : 2.25,
+      animate: false,
+    });
+  }
+
+  map.whenReady(function handleMapReady() {
+    window.requestAnimationFrame(fitAllOfficeLocations);
+  });
+
+  let resizeTimer = null;
+
+  window.addEventListener("resize", function handleMapResize() {
+    window.clearTimeout(resizeTimer);
+
+    resizeTimer = window.setTimeout(function resizeMap() {
+      map.invalidateSize(false);
+    }, 150);
+  });
 })();
 
-/* ---------------------------------------------------------------------
-   4c · PHONE FIELD — country selector (intl-tel-input v29)
-   --------------------------------------------------------------------- */
-let itiPhone = null;
+/* ================================================================
+   OFFICE CARDS
+   ================================================================ */
 
-(function initPhoneInput() {
-  const input = document.getElementById("phone");
-  if (!input || typeof window.intlTelInput === "undefined") {
-    if (input) console.warn("[cevolve] intl-tel-input did not load.");
+(function renderOfficeCards() {
+  const officeList = document.getElementById("officeList");
+
+  if (!officeList) {
     return;
   }
 
-  itiPhone = window.intlTelInput(input, {
+  officeList.innerHTML = "";
+
+  LOCATIONS.forEach(function createOfficeCard(location) {
+    const card = document.createElement("article");
+
+    card.className = "office-card";
+
+    const officeTag = location.tag
+      ? `
+        <span class="office-tag">
+          ${escapeHtml(location.tag)}
+        </span>
+      `
+      : "";
+
+    const contactPerson = location.contactName
+      ? `
+        <span class="office-person">
+          <i class="bi bi-person-fill"></i>
+          ${escapeHtml(location.contactName)}
+        </span>
+      `
+      : "";
+
+    const phone = location.tel
+      ? `
+        <span>
+          <i class="bi bi-telephone"></i>
+          <a href="tel:${escapeHtml(location.tel.replace(/[^\d+]/g, ""))}">
+            ${escapeHtml(location.tel)}
+          </a>
+        </span>
+      `
+      : "";
+
+    card.innerHTML = `
+      <div class="office-card-head">
+        <h3 class="office-country">
+          ${escapeHtml(location.country)}
+        </h3>
+
+        ${officeTag}
+      </div>
+
+      <div class="office-content">
+        <p class="office-city">
+          ${escapeHtml(location.city)}
+        </p>
+
+        <address class="office-address">
+          ${location.address.map(escapeHtml).join("<br>")}
+        </address>
+
+        <p class="office-contact">
+          ${contactPerson}
+
+          ${phone}
+
+          <span>
+            <i class="bi bi-envelope"></i>
+
+            <a href="mailto:${escapeHtml(location.email)}">
+              ${escapeHtml(location.email)}
+            </a>
+          </span>
+        </p>
+      </div>
+
+      <div class="office-footer">
+        <a
+          class="btn-map"
+          href="${gmapsUrl(location)}"
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="bi bi-geo-alt-fill"></i>
+          View on Map
+        </a>
+      </div>
+    `;
+
+    officeList.appendChild(card);
+  });
+})();
+
+/* ================================================================
+   MOBILE NAVIGATION
+   ================================================================ */
+
+(function initializeMobileNavigation() {
+  const hamburger = document.getElementById("hamburger");
+  const mobileNavigation = document.getElementById("mobileNav");
+
+  if (!hamburger || !mobileNavigation) {
+    return;
+  }
+
+  hamburger.addEventListener("click", function toggleMenu() {
+    hamburger.classList.toggle("open");
+    mobileNavigation.classList.toggle("open");
+  });
+
+  mobileNavigation
+    .querySelectorAll("a")
+    .forEach(function attachNavigationHandler(link) {
+      link.addEventListener("click", function closeMenu() {
+        hamburger.classList.remove("open");
+        mobileNavigation.classList.remove("open");
+      });
+    });
+})();
+
+/* ================================================================
+   INTERNATIONAL PHONE FIELD
+   ================================================================ */
+
+let itiPhone = null;
+
+(function initializePhoneInput() {
+  const phoneInput = document.getElementById("phone");
+
+  if (
+    !phoneInput ||
+    typeof window.intlTelInput === "undefined"
+  ) {
+    if (phoneInput) {
+      console.warn(
+        "[Cevolve] intl-tel-input could not be loaded."
+      );
+    }
+
+    return;
+  }
+
+  itiPhone = window.intlTelInput(phoneInput, {
     initialCountry: "in",
-    countryOrder: ["in", "ae", "au"] /* our office countries first */,
+    countryOrder: ["in", "ae", "au"],
     separateDialCode: true,
-    strictMode: true /* blocks impossible digits as you type */,
+    strictMode: true,
     placeholderNumberPolicy: "OFF",
   });
 })();
 
-/* ---------------------------------------------------------------------
-   4b · FORM SUBMIT via EmailJS (identical to script.js)
-   --------------------------------------------------------------------- */
-// const EMAILJS_SERVICE_ID = "service_q3c9d6n";
-// const EMAILJS_TEMPLATE_ID = "template_ta01r3o"; // company email
-// const EMAILJS_AUTOREPLY_TEMPLATE = "template_6nfr2le"; // auto reply
+/* ================================================================
+   CONTACT FORM
+   ================================================================ */
 
-// async function handleSubmit(e) {
-//   e.preventDefault();
+const CONTACT_API =
+  "https://cevolve-contact-api.onrender.com/api/contact";
 
-//   const btn = document.getElementById("submitBtn");
-//   const msg = document.getElementById("formMsg");
+async function handleSubmit(event) {
+  event.preventDefault();
 
-//   btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
-//   btn.disabled = true;
-//   msg.style.display = "none";
-
-//   // const form = e.target;
-
-//   // const params = {
-//   //   from_name: form.from_name.value,
-//   //   reply_to: form.reply_to.value,
-//   //   user_name: form.from_name.value, // required for auto-reply
-//   //   company: form.company.value,
-//   //   phone: form.phone.value,
-//   //   service: form.service.value,
-//   //   message: form.message.value,
-//   // };
-
-//   // with contry code
-//   const form = e.target;
-
-//   /* full international number + the picked country.
-//      NOTE: v29's method is getSelectedCountry(), not getSelectedCountryData(). */
-//   const typed = form.phone.value.trim();
-//   const country = itiPhone ? itiPhone.getSelectedCountry() : null;
-//   const phoneFull = itiPhone && typed ? itiPhone.getNumber() : typed;
-
-//   /* phone is optional — only validate if something was entered */
-//   if (itiPhone && typed && !itiPhone.isValidNumber()) {
-//     msg.style.display = "block";
-//     msg.style.background = "rgba(239,68,68,0.10)";
-//     msg.style.color = "#b91c1c";
-//     msg.style.border = "1px solid rgba(239,68,68,0.35)";
-//     msg.innerHTML =
-//       '<i class="bi bi-exclamation-triangle"></i> That phone number doesn\'t look valid for the selected country.';
-//     btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
-//     btn.disabled = false;
-//     return;
-//   }
-
-//   const params = {
-//     from_name: form.from_name.value,
-//     reply_to: form.reply_to.value,
-//     user_name: form.from_name.value, // required for auto-reply
-//     company: form.company.value,
-//     phone: phoneFull, // E.164, e.g. +61481540530
-//     country: country ? country.name : "", // e.g. "Australia"
-//     country_code: country ? "+" + country.dialCode : "", // e.g. "+61"
-//     country_iso: country ? country.iso2.toUpperCase() : "", // e.g. "AU"
-//     service: form.service.value,
-//     message: form.message.value,
-//   };
-
-//   try {
-//     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params);
-//     await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_AUTOREPLY_TEMPLATE, params);
-
-//     msg.style.display = "block";
-//     msg.style.background = "rgba(34,197,94,0.12)";
-//     msg.style.color = "#15803d";
-//     msg.style.border = "1px solid rgba(34,197,94,0.35)";
-//     msg.innerHTML =
-//       '<i class="bi bi-check2-circle"></i> Message sent successfully. Please check your email.';
-
-//     btn.innerHTML = '<i class="bi bi-check2-circle"></i> Sent!';
-//     form.reset();
-
-//     setTimeout(() => {
-//       btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
-//       btn.disabled = false;
-//       msg.style.display = "none";
-//     }, 5000);
-//   } catch (err) {
-//     console.error("EmailJS Error:", err);
-
-//     msg.style.display = "block";
-//     msg.style.background = "rgba(239,68,68,0.10)";
-//     msg.style.color = "#b91c1c";
-//     msg.style.border = "1px solid rgba(239,68,68,0.35)";
-//     msg.innerHTML =
-//       '<i class="bi bi-exclamation-triangle"></i> Message not sent. Please try again.';
-
-//     btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
-//     btn.disabled = false;
-//   }
-// }
-
-
-const CONTACT_API = "https://cevolve-contact-api.onrender.com/api/contact";
-
-async function handleSubmit(e) {
-  e.preventDefault();
-
-  const btn = document.getElementById("submitBtn");
-  const msg = document.getElementById("formMsg");
-  const form = e.target;
-  console.log("form submit", form);
+  const form = event.target;
+  const submitButton = document.getElementById("submitBtn");
+  const messageElement = document.getElementById("formMsg");
 
   if (!form.checkValidity()) {
     form.reportValidity();
     return;
   }
 
-  btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
-  btn.disabled = true;
-  msg.style.display = "none";
+  submitButton.innerHTML =
+    '<i class="bi bi-hourglass-split"></i> Sending...';
 
-  /* full international number + the picked country.
-     NOTE: v29's method is getSelectedCountry(), not getSelectedCountryData(). */
-  const typed = form.phone.value.trim();
-  const country = itiPhone ? itiPhone.getSelectedCountry() : null;
-  const phoneFull = itiPhone && typed ? itiPhone.getNumber() : typed;
+  submitButton.disabled = true;
+  messageElement.style.display = "none";
 
-  /* phone is optional — only validate if something was entered */
-  if (itiPhone && typed && !itiPhone.isValidNumber()) {
-    showMsg(
-      msg,
+  const typedPhone = form.phone.value.trim();
+
+  const selectedCountry = itiPhone
+    ? itiPhone.getSelectedCountry()
+    : null;
+
+  const completePhone =
+    itiPhone && typedPhone
+      ? itiPhone.getNumber()
+      : typedPhone;
+
+  if (
+    itiPhone &&
+    typedPhone &&
+    !itiPhone.isValidNumber()
+  ) {
+    showFormMessage(
+      messageElement,
       false,
-      "That phone number doesn't look valid for the selected country.",
+      "That phone number doesn't look valid for the selected country."
     );
-    resetBtn(btn);
+
+    resetSubmitButton(submitButton);
+
     return;
   }
 
   const payload = {
     name: form.from_name.value.trim(),
     email: form.reply_to.value.trim(),
-    phone: phoneFull, // E.164, e.g. +61481540530
+    phone: completePhone,
     company: form.company.value.trim(),
     service: form.service.value,
     message: form.message.value.trim(),
-    country: country ? country.name : "", // e.g. "Australia"
-    country_code: country ? "+" + country.dialCode : "", // e.g. "+61"
-    country_iso: country ? country.iso2.toUpperCase() : "", // e.g. "AU"
+
+    country: selectedCountry
+      ? selectedCountry.name
+      : "",
+
+    country_code: selectedCountry
+      ? `+${selectedCountry.dialCode}`
+      : "",
+
+    country_iso: selectedCountry
+      ? selectedCountry.iso2.toUpperCase()
+      : "",
   };
 
   try {
-    const res = await fetch(CONTACT_API, {
+    const response = await fetch(CONTACT_API, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
       body: JSON.stringify(payload),
     });
 
-    /* read the body either way — errors usually carry a reason */
-    let data = null;
+    let responseData = null;
+
     try {
-      data = await res.json();
-    } catch (_) {
-      /* endpoint returned no JSON; the status alone decides */
+      responseData = await response.json();
+    } catch (error) {
+      responseData = null;
     }
 
-    if (!res.ok) {
+    if (!response.ok) {
       throw new Error(
-        (data && (data.message || data.error)) ||
-        "Request failed (" + res.status + ")",
+        (responseData &&
+          (responseData.message || responseData.error)) ||
+        `Request failed (${response.status})`
       );
     }
 
-    // showMsg(msg, true, "Message sent successfully. We'll be in touch shortly.");
-    showMsg(
-      msg,
+    showFormMessage(
+      messageElement,
       true,
-      (data && data.message) ||
-      "Thank you for contacting Cevolve Technologies. We have received your enquiry successfully.",
+      (responseData && responseData.message) ||
+      "Thank you for contacting Cevolve Technologies. We have received your enquiry successfully."
     );
-    btn.innerHTML = '<i class="bi bi-check2-circle"></i> Sent!';
-    form.reset();
-    /* form.reset() doesn't reset the flag dropdown */
-    if (itiPhone) itiPhone.setSelectedCountry("in");
 
-    setTimeout(() => {
-      resetBtn(btn);
-      msg.style.display = "none";
+    submitButton.innerHTML =
+      '<i class="bi bi-check2-circle"></i> Sent!';
+
+    form.reset();
+
+    if (itiPhone) {
+      itiPhone.setSelectedCountry("in");
+    }
+
+    window.setTimeout(function resetSuccessMessage() {
+      resetSubmitButton(submitButton);
+      messageElement.style.display = "none";
     }, 5000);
-  } catch (err) {
-    console.error("[cevolve] contact API error:", err);
-    showMsg(msg, false, err.message || "Message not sent. Please try again.");
-    resetBtn(btn);
+  } catch (error) {
+    console.error(
+      "[Cevolve] Contact API error:",
+      error
+    );
+
+    showFormMessage(
+      messageElement,
+      false,
+      error.message ||
+      "Message not sent. Please try again."
+    );
+
+    resetSubmitButton(submitButton);
   }
 }
 
-function resetBtn(btn) {
-  btn.innerHTML = '<i class="bi bi-send"></i> Send Message';
-  btn.disabled = false;
+/* ================================================================
+   FORM HELPERS
+   ================================================================ */
+
+function resetSubmitButton(button) {
+  button.innerHTML =
+    '<i class="bi bi-send"></i> Send Message';
+
+  button.disabled = false;
 }
 
-function showMsg(el, ok, text) {
-  el.style.display = "block";
-  el.style.background = ok ? "rgba(34,197,94,0.12)" : "rgba(239,68,68,0.10)";
-  el.style.color = ok ? "#15803d" : "#b91c1c";
-  el.style.border = ok
+function showFormMessage(element, isSuccessful, text) {
+  element.style.display = "block";
+
+  element.style.background = isSuccessful
+    ? "rgba(34,197,94,0.12)"
+    : "rgba(239,68,68,0.10)";
+
+  element.style.color = isSuccessful
+    ? "#15803d"
+    : "#b91c1c";
+
+  element.style.border = isSuccessful
     ? "1px solid rgba(34,197,94,0.35)"
     : "1px solid rgba(239,68,68,0.35)";
-  el.innerHTML =
-    '<i class="bi bi-' +
-    (ok ? "check2-circle" : "exclamation-triangle") +
-    '"></i> ' +
-    text;
+
+  element.innerHTML = `
+    <i class="bi bi-${isSuccessful
+      ? "check2-circle"
+      : "exclamation-triangle"
+    }"></i>
+    ${escapeHtml(text)}
+  `;
 }
