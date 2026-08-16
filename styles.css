@@ -6229,3 +6229,32 @@ body.contact-page > .offices-map-section {
     background: #002a61;
   }
 }
+
+
+
+/* Uniform anchor position and spacing for every section */
+#services,
+#about,
+#process,
+#team,
+#clients,
+#testimonials,
+#contact {
+  padding-top: 64px !important;
+  padding-bottom: 64px !important;
+  scroll-margin-top: 16px;
+}
+
+@media (max-width: 767px) {
+  #services,
+  #about,
+  #process,
+  #team,
+  #clients,
+  #testimonials,
+  #contact {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+    scroll-margin-top: 24px;
+  }
+}
