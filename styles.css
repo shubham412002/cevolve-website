@@ -6148,6 +6148,26 @@ body.contact-page > .offices-map-section {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* The large mobile hit area stays invisible and never receives the browser's
+   rectangular SVG focus outline. The selected location uses the round ring. */
+/* Leaflet/browser focus on an SVG path creates the square shown around a
+   tapped circle marker. Remove it from every interactive map path. */
+.contact-page #worldMap .leaflet-interactive,
+.contact-page #worldMap .leaflet-interactive:focus,
+.contact-page #worldMap .leaflet-interactive:focus-visible,
+.contact-page #worldMap .cev-sub-location-touch-target,
+.contact-page #worldMap .cev-sub-location-touch-target:focus,
+.contact-page #worldMap .cev-sub-location-touch-target:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.contact-page #worldMap .cev-sub-location-touch-target {
+  stroke: transparent !important;
+}
+
 .office-contact a[href^="tel:"] {
   color: inherit;
   text-decoration: none;
@@ -6205,4 +6225,3 @@ body.contact-page > .offices-map-section {
     background: #002a61;
   }
 }
-
