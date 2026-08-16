@@ -6255,6 +6255,6 @@ body.contact-page > .offices-map-section {
   #contact {
     padding-top: 40px !important;
     padding-bottom: 40px !important;
-    scroll-margin-top: 24px;
+    scroll-margin-top: 40px;
   }
 }
