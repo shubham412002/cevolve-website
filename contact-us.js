@@ -124,7 +124,7 @@ function escapeHtml(value) {
 
   if (
     typeof L === "undefined" ||
-    typeof am5geodata_worldLow === "undefined"
+    typeof am5geodata_worldIndiaHigh === "undefined"
   ) {
     mapElement.classList.add("is-unavailable");
 
@@ -256,7 +256,7 @@ function escapeHtml(value) {
      COUNTRY POLYGON LAYER
      -------------------------------------------------------------- */
 
-  const worldLayer = L.geoJSON(am5geodata_worldLow, {
+  const worldLayer = L.geoJSON(am5geodata_worldIndiaHigh, {
     style(feature) {
       const isOfficeCountry = OFFICE_REGIONS.includes(feature.id);
       const isCoverageCountry = COVERAGE_REGIONS.includes(feature.id);

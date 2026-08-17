@@ -1,5 +1,5 @@
-
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,12 +14,14 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@29.2.2/dist/css/intlTelInput.css" />
 </head>
+
 <body class="contact-page">
   <header>
     <a href="index.html#home" class="logo">
       <picture>
         <source media="(max-width: 767px)" srcset="assets/logo/cevolve-logo-vertical-new.png" />
-        <img src="assets/logo/cevolve-logo-horizontal-new.png" alt="Cevolve Technologies" class="logo-img" onerror="this.style.display='none'" />
+        <img src="assets/logo/cevolve-logo-horizontal-new.png" alt="Cevolve Technologies" class="logo-img"
+          onerror="this.style.display='none'" />
       </picture>
     </a>
     <nav>
@@ -44,35 +46,50 @@
     <div class="offices-head">
       <div class="section-label">Contact Us</div>
       <h1 class="section-title">Our <span>Global Offices</span></h1>
-      <p class="offices-head-note">Prefer email? Write to <a href="mailto:info@cevolvetechnologies.com">info@cevolvetechnologies.com</a> and your message goes straight to the right team.</p>
+      <p class="offices-head-note">Prefer email? Write to <a
+          href="mailto:info@cevolvetechnologies.com">info@cevolvetechnologies.com</a> and your message goes straight to
+        the right team.</p>
     </div>
     <div class="offices-layout">
-      <div class="offices-col"><div class="office-list" id="officeList"></div></div>
+      <div class="offices-col">
+        <div class="office-list" id="officeList"></div>
+      </div>
       <div class="form-col">
         <div class="contact-form">
           <h2 class="form-col-title">GET IN TOUCH</h2>
           <form id="contactForm" onsubmit="handleSubmit(event)">
             <div class="form-row">
-              <div class="form-group"><label>Your Name</label><input type="text" name="from_name" placeholder="John Smith" required /></div>
-              <div class="form-group"><label>Your Email</label><input type="email" name="reply_to" placeholder="john@company.com" required /></div>
+              <div class="form-group"><label>Your Name</label><input type="text" name="from_name"
+                  placeholder="John Smith" required /></div>
+              <div class="form-group"><label>Your Email</label><input type="email" name="reply_to"
+                  placeholder="john@company.com" required /></div>
             </div>
             <div class="form-row">
-              <div class="form-group"><label>Company</label><input type="text" name="company" placeholder="Company name" /></div>
+              <div class="form-group"><label>Company</label><input type="text" name="company"
+                  placeholder="Company name" /></div>
               <div class="form-group"><label>Phone</label><input type="tel" id="phone" name="phone" required /></div>
             </div>
             <div class="form-group">
               <label>Service Interested In</label>
               <select name="service">
-                <option value="">Select a service...</option><option>Microsoft D365 CE</option>
-                <option>Microsoft D365 F&amp;O</option><option>Power Platform</option>
-                <option>Managed Services</option><option>IBM Maximo</option><option>Cyber Security</option>
-                <option>Artificial Intelligence</option><option>Web Development</option>
+                <option value="">Select a service...</option>
+                <option>Microsoft D365 CE</option>
+                <option>Microsoft D365 F&amp;O</option>
+                <option>Power Platform</option>
+                <option>Managed Services</option>
+                <option>IBM Maximo</option>
+                <option>Cyber Security</option>
+                <option>Artificial Intelligence</option>
+                <option>Web Development</option>
                 <option>Android / iOS Mobile App Development</option>
               </select>
             </div>
-            <div class="form-group"><label>Your Message</label><textarea name="message" placeholder="Tell us about your project or challenge..."></textarea></div>
+            <div class="form-group"><label>Your Message</label><textarea name="message"
+                placeholder="Tell us about your project or challenge..."></textarea></div>
             <button type="submit" class="submit-btn" id="submitBtn"><i class="bi bi-send"></i> Send Message</button>
-            <div id="formMsg" style="display:none;margin-top:14px;padding:12px 16px;border-radius:8px;font-size:14px;font-weight:600;text-align:center"></div>
+            <div id="formMsg"
+              style="display:none;margin-top:14px;padding:12px 16px;border-radius:8px;font-size:14px;font-weight:600;text-align:center">
+            </div>
           </form>
         </div>
       </div>
@@ -82,26 +99,43 @@
   <footer>
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="logo-wrap"><img src="assets/logo/cv-logo-white-hor.png" alt="Cevolve Technologies" style="height:44px;width:auto" /></div>
+        <div class="logo-wrap"><img src="assets/logo/cv-logo-white-hor.png" alt="Cevolve Technologies"
+            style="height:44px;width:auto" /></div>
         <p class="footer-tagline">Technology Partner for Business Evolution</p>
-        <p>Cevolve Technologies helps mid-market organizations evolve, optimize and scale through Microsoft Dynamics 365, Power Platform, IBM Maximo, AI, cybersecurity, mobile applications and managed technology services.</p>
+        <p>Cevolve Technologies helps mid-market organizations evolve, optimize and scale through Microsoft Dynamics
+          365, Power Platform, IBM Maximo, AI, cybersecurity, mobile applications and managed technology services.</p>
         <p class="footer-motto">Evolve. <span>|</span> Support. <span>|</span> Scale.</p>
         <div class="footer-social">
-          <a href="https://www.linkedin.com/company/cevolvetech" class="s-linkedin" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-          <a href="https://www.instagram.com/cevolvetech/?hl=en" class="s-instagram" target="_blank" rel="noopener" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-          <a href="https://x.com/cevolvetech" class="s-x" target="_blank" rel="noopener" aria-label="X"><i class="bi bi-twitter-x"></i></a>
+          <a href="https://www.linkedin.com/company/cevolvetech" class="s-linkedin" target="_blank" rel="noopener"
+            aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+          <a href="https://www.instagram.com/cevolvetech/?hl=en" class="s-instagram" target="_blank" rel="noopener"
+            aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="https://x.com/cevolvetech" class="s-x" target="_blank" rel="noopener" aria-label="X"><i
+              class="bi bi-twitter-x"></i></a>
         </div>
       </div>
-      <div class="footer-col"><h5>Services</h5><a href="index.html#services">D365 CE</a><a href="index.html#services">D365 F&amp;O</a><a href="index.html#services">Power Platform</a><a href="index.html#services">IBM Maximo</a><a href="index.html#services">Mobile App Development</a><a href="index.html#services">Managed Services</a><a href="index.html#services">Cyber Security</a><a href="index.html#services">Artificial Intelligence</a></div>
-      <div class="footer-col"><h5>Company</h5><a href="index.html#about">About Us</a><a href="index.html#process">Our Process</a><a href="index.html#testimonials">Client Stories</a><a href="contact-us.html">Contact</a></div>
+      <div class="footer-col">
+        <h5>Services</h5><a href="index.html#services">D365 CE</a><a href="index.html#services">D365 F&amp;O</a><a
+          href="index.html#services">Power Platform</a><a href="index.html#services">IBM Maximo</a><a
+          href="index.html#services">Web &amp; Mobile App Development</a><a href="index.html#services">Managed Services</a><a
+          href="index.html#services">Cyber Security</a><a href="index.html#services">Artificial Intelligence</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5><a href="index.html#about">About Us</a><a href="index.html#process">Our Process</a><a
+          href="index.html#testimonials">Client Stories</a><a href="contact-us.html">Contact</a>
+      </div>
     </div>
-    <div class="footer-bottom"><p>© 2026 Cevolve Technologies. All Rights Reserved.</p></div>
+    <div class="footer-bottom">
+      <p>© 2026 Cevolve Technologies. All Rights Reserved.</p>
+    </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+  <!-- <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script> -->
+  <script src="https://cdn.amcharts.com/lib/5/geodata/worldIndiaHigh.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@29.2.2/dist/js/intlTelInputWithUtils.min.js"></script>
   <script src="contact-us.js"></script>
 </body>
+
 </html>
