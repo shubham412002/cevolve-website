@@ -47,21 +47,21 @@ const OFFICE_REGIONS = ["IN", "AE", "AU"];
 
 /* Regional coverage: Middle East and New Zealand. */
 const COVERAGE_REGIONS = [
-  "SA", // Saudi Arabia
-  "QA", // Qatar
-  "KW", // Kuwait
-  "OM", // Oman
-  "BH", // Bahrain
-  "JO", // Jordan
-  "LB", // Lebanon
-  "IQ", // Iraq
-  "YE", // Yemen
-  "IR", // Iran
-  "IL", // Israel
-  "PS", // Palestine
-  "SY", // Syria
-  "TR", // Turkey
-  "EG", // Egypt
+  // "SA", // Saudi Arabia
+  // "QA", // Qatar
+  // "KW", // Kuwait
+  // "OM", // Oman
+  // "BH", // Bahrain
+  // "JO", // Jordan
+  // "LB", // Lebanon
+  // "IQ", // Iraq
+  // "YE", // Yemen
+  // "IR", // Iran
+  // "IL", // Israel
+  // "PS", // Palestine
+  // "SY", // Syria
+  // "TR", // Turkey
+  // "EG", // Egypt
   "NZ", // New Zealand
 ];
 
