@@ -555,15 +555,15 @@ function escapeHtml(value) {
        hit area so slight finger movement is not treated as map dragging. */
     const subLocationTarget = isTouchDevice
       ? L.circleMarker(location.coords, {
-          radius: 16,
-          fill: true,
-          fillColor: "#0361eb",
-          fillOpacity: 0.001,
-          stroke: false,
-          opacity: 1,
-          interactive: true,
-          bubblingMouseEvents: false,
-        }).addTo(map)
+        radius: 16,
+        fill: true,
+        fillColor: "#0361eb",
+        fillOpacity: 0.001,
+        stroke: false,
+        opacity: 1,
+        interactive: true,
+        bubblingMouseEvents: false,
+      }).addTo(map)
       : subMarker;
 
     subLocationTarget.bindTooltip(escapeHtml(location.name), {
@@ -622,7 +622,7 @@ function escapeHtml(value) {
     }
   ).concat([
     [26, 30], // Western Middle East coverage anchor
-    [-41.2865, 174.7762], // New Zealand coverage anchor
+    // [-41.2865, 174.7762], // New Zealand coverage anchor
   ]);
 
   const officeBounds = L.latLngBounds(initialViewCoordinates);
@@ -630,16 +630,23 @@ function escapeHtml(value) {
   function fitAllOfficeLocations() {
     map.invalidateSize(false);
 
+    // map.fitBounds(officeBounds, {
+    //   paddingTopLeft: isMobile
+    //     ? [42, 44]
+    //     : [180, 65],
+
+    //   paddingBottomRight: isMobile
+    //     ? [42, 44]
+    //     : [180, 65],
+
+    //   maxZoom: isMobile ? 1.75 : 2.25,
+    //   animate: false,
+    // });
+
     map.fitBounds(officeBounds, {
-      paddingTopLeft: isMobile
-        ? [42, 44]
-        : [180, 65],
-
-      paddingBottomRight: isMobile
-        ? [42, 44]
-        : [180, 65],
-
-      maxZoom: isMobile ? 1.75 : 2.25,
+      paddingTopLeft: isMobile ? [42, 44] : [80, 60],
+      paddingBottomRight: isMobile ? [42, 44] : [80, 60],
+      maxZoom: isMobile ? 1.75 : 2.75,
       animate: false,
     });
   }
